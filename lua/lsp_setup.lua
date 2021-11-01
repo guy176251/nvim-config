@@ -138,9 +138,8 @@ local tsserver_on_attach = function(client, bufnr)
         eslint_bin = "eslint_d",
         eslint_enable_diagnostics = true,
         eslint_enable_code_actions = true,
-        enable_formatting = true,
         enable_import_on_completion = true,
-        formatter = "prettier"
+        filter_out_diagnostics_by_severity = {"error", "warning", "information", "hint"}
     }
     ts_utils.setup_client(client)
 
@@ -179,6 +178,10 @@ require("nvim-lsp-installer").on_server_ready(
 
         if server.name == "tsserver" then
             opts.on_attach = tsserver_on_attach
+        --opts.handlers = {
+        --    ["textDocument/publishDiagnostics"] = function()
+        --    end
+        --}
         end
 
         server:setup(opts)

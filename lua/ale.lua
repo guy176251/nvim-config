@@ -13,12 +13,11 @@ g.ale_fixers = {
     lua = {"luafmt"},
     css = {"prettier"},
     scss = {"prettier"},
-    html = {"prettier"}
-    -- using null-ls for formatting js/ts
-    --javascript = {"prettier"},
-    --typescript = {"prettier"},
-    --javascriptreact = {"prettier"},
-    --typescriptreact = {"prettier"}
+    html = {"prettier"},
+    javascript = {"prettier"},
+    typescript = {"prettier"},
+    javascriptreact = {"prettier"},
+    typescriptreact = {"prettier"}
 }
 
 g.ale_linters = {
