@@ -101,6 +101,7 @@ local common_on_attach = function(client, bufnr)
     end
 
     client.resolved_capabilities.document_formatting = false
+    client.resolved_capabilities.document_range_formatting = false
     -- Enable completion triggered by <c-x><c-o>
     buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 
@@ -129,14 +130,18 @@ end
 
 -- enable null-ls integration (optional)
 require("null-ls").config {}
-require("lspconfig")["null-ls"].setup {}
+require("lspconfig")["null-ls"].setup {on_attach = common_on_attach}
 
 local tsserver_on_attach = function(client, bufnr)
     local ts_utils = require("nvim-lsp-ts-utils")
-
-    ts_utils.setup {enable_import_on_completion = true}
-
-    -- required to fix code action ranges and filter diagnostics
+    ts_utils.setup {
+        eslint_bin = "eslint_d",
+        eslint_enable_diagnostics = true,
+        eslint_enable_code_actions = true,
+        enable_formatting = true,
+        enable_import_on_completion = true,
+        formatter = "prettier"
+    }
     ts_utils.setup_client(client)
 
     -- no default maps, so you may want to define some here

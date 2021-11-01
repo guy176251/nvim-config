@@ -4,6 +4,7 @@ require "plugins"
 require "config"
 require "keybinds"
 require "save_buffer_position"
+require "lsp_setup"
 
 --local theme = vim.env.LIGHTMODE == "1" and "onehalflight" or "onedark"
 --vim.cmd("colorscheme " .. theme)
