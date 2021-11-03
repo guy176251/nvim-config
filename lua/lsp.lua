@@ -1,4 +1,9 @@
 local opt = vim.opt -- to set options
+--
+--------------------
+-- NVIM-AUTOPAIRS --
+--------------------
+require("nvim-autopairs").setup {check_ts = true}
 
 --------------
 -- NVIM-CMP --
@@ -13,6 +18,7 @@ local has_words_before = function()
 end
 
 local luasnip = require("luasnip")
+local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 local cmp = require("cmp")
 
 cmp.setup {
@@ -64,6 +70,8 @@ cmp.setup {
         {name = "luasnip"}
     }
 }
+
+cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({map_char = {tex = ""}}))
 
 --------------------
 -- NVIM-AUTOPAIRS --

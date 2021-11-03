@@ -27,7 +27,7 @@ opt.linebreak = true
 opt.inccommand = "split" -- Get a preview of replacements
 opt.incsearch = true -- Shows the match while typing
 
---opt.undofile = true
+opt.undofile = true
 --opt.undodir = "~/.local/share/nvim/undodir"
 
 opt.encoding = "utf-8"

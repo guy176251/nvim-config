@@ -63,12 +63,12 @@ map("v", "w", hopword, {silent = true})
 -- FZF --
 ---------
 map("n", "<Leader>o", ":Files <CR>")
-map("n", "<Leader>b", ":Buffers <CR>")
+map("n", "<Leader>p", ":Buffers <CR>")
 map("n", "<Leader>h", ":Helptags <CR>")
 map("n", "<Leader>;", ":History: <CR>")
 map("n", "<Leader>c", ":Commands <CR>")
 map("n", "<Leader>/", ":Rg <CR>")
-map("n", "<Leader>[", ":Windows <CR>")
+--map("n", "<Leader>[", ":Windows <CR>")
 
 ---------
 -- ALE --

@@ -34,8 +34,8 @@ require("packer").startup(
         }
 
         -- EDITOR
-        --use "windwp/nvim-autopairs"
-        use "jiangmiao/auto-pairs"
+        use "windwp/nvim-autopairs"
+        --use "jiangmiao/auto-pairs"
         use "dense-analysis/ale"
         --use "nathanmsmith/nvim-ale-diagnostic"
 
