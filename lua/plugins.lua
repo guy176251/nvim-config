@@ -38,6 +38,7 @@ require("packer").startup(
         --use "jiangmiao/auto-pairs"
         use "dense-analysis/ale"
         --use "nathanmsmith/nvim-ale-diagnostic"
+        use "turbio/bracey.vim"
 
         -- LSP
         use {"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}

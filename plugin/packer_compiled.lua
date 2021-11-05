@@ -89,6 +89,11 @@ _G.packer_plugins = {
     path = "/home/guy/.local/share/nvim/site/pack/packer/start/bclose.vim",
     url = "https://github.com/rbgrouleff/bclose.vim"
   },
+  ["bracey.vim"] = {
+    loaded = true,
+    path = "/home/guy/.local/share/nvim/site/pack/packer/start/bracey.vim",
+    url = "https://github.com/turbio/bracey.vim"
+  },
   ["cmp-nvim-lsp"] = {
     loaded = true,
     path = "/home/guy/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",

@@ -3,6 +3,7 @@ vim.cmd [[au BufRead,BufNewFile .env.* set filetype=sh]]
 
 local opt = vim.opt -- to set options
 local fn = vim.fn
+local g = vim.g
 
 opt.autoindent = true
 opt.autoread = true
@@ -43,8 +44,16 @@ opt.titlestring = [[NVIM: [%{fnamemodify(getcwd(), ':t')}] %t]]
 opt.cursorline = true
 opt.cursorcolumn = true
 
--- "rbgrouleff/bclose.vim"
-vim.g.bclose_no_plugin_maps = true
+----------------
+-- BCLOSE.VIM --
+----------------
+g.bclose_no_plugin_maps = true
+
+----------------
+-- BRACEY.VIM --
+----------------
+-- https://github.com/turbio/bracey.vim
+--g.bracey_refresh_on_save = true
 
 -----------------------
 -- TREESITTER CONFIG --
