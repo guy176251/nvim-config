@@ -63,6 +63,8 @@ map("v", "w", hopword, {silent = true})
 -- FZF --
 ---------
 map("n", "<Leader>o", ":Files <CR>")
+map("n", "<Leader>O", [[:lua vim.fn['fzf#vim#files']('~/') <CR>]])
+map("n", "<Leader>g", ":GFiles <CR>")
 map("n", "<Leader>p", ":Buffers <CR>")
 map("n", "<Leader>h", ":Helptags <CR>")
 map("n", "<Leader>;", ":History: <CR>")
