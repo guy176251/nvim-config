@@ -53,7 +53,7 @@ g.bclose_no_plugin_maps = true
 -- BRACEY.VIM --
 ----------------
 -- https://github.com/turbio/bracey.vim
---g.bracey_refresh_on_save = true
+g.bracey_refresh_on_save = true
 
 -----------------------
 -- TREESITTER CONFIG --
@@ -62,7 +62,7 @@ require("nvim-treesitter.configs").setup {
     ensure_installed = "maintained",
     highlight = {
         enable = true,
-        disable = {"typescript", "tsx", "html"}
+        disable = {"typescript", "tsx", "html", "javascript"}
     }
 }
 
