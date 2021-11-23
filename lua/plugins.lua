@@ -19,7 +19,8 @@ require("packer").startup(
         use "dhruvasagar/vim-table-mode"
 
         -- VIM THEMING
-        use "rafi/awesome-vim-colorschemes" -- vim themes
+        --use "rafi/awesome-vim-colorschemes" -- vim themes
+        use "projekt0n/github-nvim-theme"
 
         -- FILE MANAGEMENT
         use "junegunn/fzf"

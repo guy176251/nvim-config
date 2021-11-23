@@ -71,7 +71,7 @@ require("nvim-treesitter.configs").setup {
 -------------
 
 require("lualine").setup {
-    options = {theme = "onedark", icons_enabled = true},
+    options = {theme = "github", icons_enabled = true},
     sections = {
         lualine_a = {"mode"},
         lualine_b = {
@@ -137,3 +137,13 @@ require("lualine").setup {
     },
     extensions = {}
 }
+
+-----------------------
+-- GITHUB NVIM THEME --
+-----------------------
+require("github-theme").setup(
+    {
+        theme_style = "dark_default",
+        hide_inactive_statusline = false
+    }
+)

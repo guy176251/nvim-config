@@ -138,7 +138,17 @@ end
 
 -- enable null-ls integration (optional)
 require("null-ls").config {}
-require("lspconfig")["null-ls"].setup {on_attach = common_on_attach}
+require("lspconfig")["null-ls"].setup {
+    on_attach = common_on_attach,
+    handlers = {
+        ["textDocument/publishDiagnostics"] = vim.lsp.with(
+            vim.lsp.diagnostic.on_publish_diagnostics,
+            {
+                virtual_text = false
+            }
+        )
+    }
+}
 
 local tsserver_on_attach = function(client, bufnr)
     local ts_utils = require("nvim-lsp-ts-utils")
@@ -147,7 +157,12 @@ local tsserver_on_attach = function(client, bufnr)
         eslint_enable_diagnostics = true,
         eslint_enable_code_actions = true,
         enable_import_on_completion = true,
-        filter_out_diagnostics_by_severity = {"error", "warning", "information", "hint"}
+        filter_out_diagnostics_by_severity = {
+            "information",
+            "hint"
+            --"warning",
+            --"error",
+        }
     }
     ts_utils.setup_client(client)
 
@@ -168,12 +183,20 @@ require("nvim-lsp-installer").on_server_ready(
 
         local opts = {
             on_attach = common_on_attach,
+            capabilities = capabilities,
             flags = {
                 debounce_text_changes = 150
             },
-            capabilities = capabilities,
             settings = {
                 format = {enable = false}
+            },
+            handlers = {
+                ["textDocument/publishDiagnostics"] = vim.lsp.with(
+                    vim.lsp.diagnostic.on_publish_diagnostics,
+                    {
+                        virtual_text = false
+                    }
+                )
             }
         }
 
@@ -186,10 +209,18 @@ require("nvim-lsp-installer").on_server_ready(
 
         if server.name == "tsserver" then
             opts.on_attach = tsserver_on_attach
-        --opts.handlers = {
-        --    ["textDocument/publishDiagnostics"] = function()
-        --    end
-        --}
+        elseif server.name == "sumneko_lua" then
+            opts.settings.Lua = {
+                diagnostics = {
+                    globals = {
+                        -- neovim
+                        "vim",
+                        -- awesome
+                        "awesome",
+                        "client"
+                    }
+                }
+            }
         end
 
         server:setup(opts)

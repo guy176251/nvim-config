@@ -69,7 +69,7 @@ map("n", "<Leader>p", ":Buffers <CR>")
 map("n", "<Leader>h", ":Helptags <CR>")
 map("n", "<Leader>;", ":History: <CR>")
 map("n", "<Leader>c", ":Commands <CR>")
-map("n", "<Leader>/", ":Rg <CR>")
+map("n", "<Leader>s", ":Rg <CR>")
 --map("n", "<Leader>[", ":Windows <CR>")
 
 ---------
