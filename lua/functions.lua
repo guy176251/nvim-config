@@ -44,7 +44,7 @@ end
 -- I want my bclose bindings to also remove harpoon marks
 function _G.harpoon_rm_file()
     require("harpoon.mark").rm_file()
-    vim.api.nvim_command("Bclose")
+    vim.api.nvim_command("bd")
 end
 
 -- Lualine status element for harpoon

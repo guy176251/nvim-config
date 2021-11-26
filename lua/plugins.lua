@@ -30,7 +30,10 @@ require("packer").startup(
         use "junegunn/fzf.vim"
         use "rbgrouleff/bclose.vim"
         use "francoiscabrol/ranger.vim"
+
+        -- GIT
         use "tpope/vim-fugitive"
+        use "stsewd/fzf-checkout.vim"
 
         -- AIRLINE
         use {
