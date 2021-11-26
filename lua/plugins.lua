@@ -20,13 +20,17 @@ require("packer").startup(
 
         -- VIM THEMING
         --use "rafi/awesome-vim-colorschemes" -- vim themes
+        use "navarasu/onedark.nvim"
         use "projekt0n/github-nvim-theme"
+        use "wojciechkepka/vim-github-dark"
+        use "folke/tokyonight.nvim"
 
         -- FILE MANAGEMENT
         use "junegunn/fzf"
         use "junegunn/fzf.vim"
         use "rbgrouleff/bclose.vim"
         use "francoiscabrol/ranger.vim"
+        use "tpope/vim-fugitive"
 
         -- AIRLINE
         use {
@@ -50,6 +54,8 @@ require("packer").startup(
         use "nvim-lua/plenary.nvim"
         use "jose-elias-alvarez/nvim-lsp-ts-utils"
         use "jose-elias-alvarez/null-ls.nvim"
+
+        use "ThePrimeagen/harpoon"
 
         use "L3MON4D3/LuaSnip" -- Snippets plugin
         use "hrsh7th/nvim-cmp" -- Autocompletion plugin

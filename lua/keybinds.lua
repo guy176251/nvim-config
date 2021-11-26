@@ -9,13 +9,17 @@ end
 
 vim.g.mapleader = ","
 
+require("functions")
+
 map("v", "<C-C>", '"+y')
-map("n", "<Tab>", ":bnext<CR>")
-map("n", "<S-Tab>", ":bprevious<CR>")
+--map("n", "<Tab>", ":bnext<CR>")
+--map("n", "<S-Tab>", ":bprevious<CR>")
+map("n", "<Tab>", ":lua harpoon_bnext()<CR>")
+map("n", "<S-Tab>", ":lua harpoon_bprevious()<CR>")
 map("n", "<esc>", ":noh<cr><esc>", {silent = true}) --After searching, pressing escape stops the highlight
 
 map("n", "<Leader>w", [[:%s/\s\+$//e <CR>]])
-map("n", "<Leader>x", ":Bclose <CR>")
+--map("n", "<Leader>x", ":Bclose <CR>")
 map("n", "<Leader>t", ":tabnew <CR>")
 
 -- Split navigations
@@ -77,3 +81,16 @@ map("n", "<Leader>s", ":Rg <CR>")
 ---------
 --map("n", "<c-k>", ":ALEPreviousWrap <CR>", {silent = true})
 --map("n", "<c-j>", ":ALENextWrap <CR>", {silent = true})
+
+-------------
+-- HARPOON --
+-------------
+
+--map("n", "<Leader>m", [[:lua require("harpoon.mark").add_file() <CR>]])
+map("n", "<Leader>x", ":lua harpoon_rm_file()<CR>")
+map("n", "<Leader>m", [[:lua harpoon_toggle_file()<CR>]])
+map("n", "<Leader>M", [[:lua harpoon_clear_all()<CR>]])
+map("n", "<Leader>l", [[:lua require("harpoon.ui").toggle_quick_menu()<CR>]])
+
+--map("n", "<Leader>n", [[:lua require("harpoon.ui").nav_next() <CR>]])
+--map("n", "<Leader>N", [[:lua require("harpoon.ui").nav_prev() <CR>]])

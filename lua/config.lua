@@ -1,5 +1,7 @@
 -- env file highlighting
 vim.cmd [[au BufRead,BufNewFile .env.* set filetype=sh]]
+-- Dockerfile file highlighting
+vim.cmd [[au BufRead,BufNewFile Dockerfile.* set filetype=dockerfile]]
 
 local opt = vim.opt -- to set options
 local fn = vim.fn
@@ -44,6 +46,12 @@ opt.titlestring = [[NVIM: [%{fnamemodify(getcwd(), ':t')}] %t]]
 opt.cursorline = true
 opt.cursorcolumn = true
 
+------------------
+-- ONEDARK.NVIM --
+------------------
+g.onedark_toggle_style_keymap = "<nop>"
+--g.onedark_style = "cool"
+
 ----------------
 -- BCLOSE.VIM --
 ----------------
@@ -66,12 +74,23 @@ require("nvim-treesitter.configs").setup {
     }
 }
 
+-----------------------
+-- GITHUB NVIM THEME --
+-----------------------
+--require("github-theme").setup(
+--    {
+--        theme_style = "dark_default",
+--        hide_inactive_statusline = false
+--    }
+--)
+g.github_hide_inactive_statusline = false
+
 -------------
 -- LUALINE --
 -------------
 
 require("lualine").setup {
-    options = {theme = "github", icons_enabled = true},
+    options = {theme = "onedark", icons_enabled = true},
     sections = {
         lualine_a = {"mode"},
         lualine_b = {
@@ -107,7 +126,7 @@ require("lualine").setup {
                 "buffers",
                 show_filename_only = false, -- shows shortened relative path when false
                 show_modified_status = true, -- shows indicator then bufder is modified
-                max_length = vim.o.columns * 1, -- maximum width of buffers component
+                max_length = vim.o.columns * 6 / 7, -- maximum width of buffers component
                 filetype_names = {
                     TelescopePrompt = "Telescope",
                     dashboard = "Dashboard",
@@ -132,18 +151,32 @@ require("lualine").setup {
                 cond = function()
                     return fn.tabpagenr("$") > 1
                 end
+            },
+            {
+                [[harpoon_status()]],
+                cond = function()
+                    return require("harpoon.mark").get_length() > 0
+                end
             }
         }
     },
     extensions = {}
 }
 
------------------------
--- GITHUB NVIM THEME --
------------------------
-require("github-theme").setup(
+-------------
+-- HARPOON --
+-------------
+
+--Here is the set of global settings and their default values.
+
+require("harpoon").setup(
     {
-        theme_style = "dark_default",
-        hide_inactive_statusline = false
+        global_settings = {
+            save_on_toggle = false,
+            save_on_change = true,
+            enter_on_sendcmd = false,
+            tmux_autoclose_windows = false,
+            excluded_filetypes = {"harpoon"}
+        }
     }
 )

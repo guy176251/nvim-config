@@ -12,6 +12,8 @@ require "lsp"
 --vim.g.onedark_terminal_italics = true
 --vim.opt.background = "light"
 --vim.opt.background = "dark"
---vim.cmd("colorscheme onedark")
+vim.cmd("colorscheme onedark")
 
---vim.cmd("colorscheme github_dark")
+--vim.cmd("colorscheme ghdark")
+--vim.cmd("colorscheme github_dark_default")
+--vim.cmd("colorscheme tokyonight")
