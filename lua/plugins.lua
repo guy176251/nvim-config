@@ -4,6 +4,9 @@ require("packer").startup(
     function()
         use "wbthomason/packer.nvim"
 
+        -- OPENAI CODEX
+        use "tom-doerr/vim_codex"
+
         -- NAVIGATION
         use {
             "phaazon/hop.nvim",
@@ -30,6 +33,8 @@ require("packer").startup(
         use "junegunn/fzf.vim"
         use "rbgrouleff/bclose.vim"
         use "francoiscabrol/ranger.vim"
+        use "vijaymarupudi/nvim-fzf"
+        use "vijaymarupudi/nvim-fzf-commands"
 
         -- GIT
         use "tpope/vim-fugitive"
@@ -47,6 +52,8 @@ require("packer").startup(
         use "dense-analysis/ale"
         --use "nathanmsmith/nvim-ale-diagnostic"
         use "turbio/bracey.vim"
+        -- init.lua
+        use "lukas-reineke/indent-blankline.nvim"
 
         -- LSP
         use {"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}

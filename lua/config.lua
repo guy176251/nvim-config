@@ -46,11 +46,24 @@ opt.titlestring = [[NVIM: [%{fnamemodify(getcwd(), ':t')}] %t]]
 opt.cursorline = true
 opt.cursorcolumn = true
 
+-- disable highlight outside of search and replace
+vim.cmd [[
+" Enable highlighting all the matches in incsearch mode
+" But don't enable hlsearch always
+augroup vimrc-incsearch-highlight
+  autocmd!
+  autocmd CmdlineEnter [/\?:] :set hlsearch
+  autocmd CmdlineLeave [/\?:] :set nohlsearch
+augroup END
+]]
+
 ------------------
 -- ONEDARK.NVIM --
 ------------------
-g.onedark_toggle_style_keymap = "<nop>"
 --g.onedark_style = "cool"
+g.onedark_style = "darker"
+g.onedark_toggle_style_keymap = "<nop>"
+--g.onedark_darker_diagnostics = false
 
 ----------------
 -- BCLOSE.VIM --
@@ -94,7 +107,7 @@ require("lualine").setup {
     sections = {
         lualine_a = {"mode"},
         lualine_b = {
-            "branch"
+            "FugitiveHead"
         },
         lualine_c = {"filename"},
         lualine_x = {
@@ -104,7 +117,7 @@ require("lualine").setup {
             [[string.format("%d Lines", vim.fn.line('$'))]],
             {
                 "diagnostics",
-                sources = {"nvim_lsp", "ale"}
+                sources = {"nvim_diagnostic", "ale"}
             }
         },
         lualine_y = {
@@ -180,3 +193,46 @@ require("harpoon").setup(
         }
     }
 )
+
+--------------
+-- NVIM FZF --
+--------------
+require("fzf").default_options = {
+    fzf_cli_args = " --height 100% --preview='bat --color=always --style=header,grid --line-range :300 {}' "
+}
+
+----------------------
+-- INDENT-BLANKLINE --
+----------------------
+--vim.opt.termguicolors = true
+--vim.cmd [[highlight IndentBlanklineIndent1 guibg=#1f1f1f gui=nocombine]]
+--vim.cmd [[highlight IndentBlanklineIndent2 guibg=#1a1a1a gui=nocombine]]
+--
+--require("indent_blankline").setup {
+--    char = "",
+--    char_highlight_list = {
+--        "IndentBlanklineIndent1",
+--        "IndentBlanklineIndent2"
+--    },
+--    space_char_highlight_list = {
+--        "IndentBlanklineIndent1",
+--        "IndentBlanklineIndent2"
+--    },
+--    show_trailing_blankline_indent = false
+--}
+
+--vim.opt.list = true
+--vim.opt.listchars:append("eol:↴")
+--
+--require("indent_blankline").setup {
+--    show_end_of_line = true
+--}
+--vim.opt.listchars:append("eol:↴")
+vim.opt.list = true
+vim.opt.listchars:append("space:⋅")
+
+require("indent_blankline").setup {
+    space_char_blankline = " ",
+    show_current_context = true,
+    show_current_context_start = true
+}

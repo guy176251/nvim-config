@@ -137,9 +137,12 @@ local common_on_attach = function(client, bufnr)
 end
 
 -- enable null-ls integration (optional)
-require("null-ls").config {}
-require("lspconfig")["null-ls"].setup {
+--  lspconfig integration is deprecated; pass options to setup instead
+--require("null-ls").config {}
+require("null-ls").setup {
     on_attach = common_on_attach,
+    --}
+    --require("lspconfig")["null-ls"].setup {
     handlers = {
         ["textDocument/publishDiagnostics"] = vim.lsp.with(
             vim.lsp.diagnostic.on_publish_diagnostics,
@@ -200,12 +203,12 @@ require("nvim-lsp-installer").on_server_ready(
             }
         }
 
-        local vscode_servers = {html = "html", jsonls = "json", cssls = "css"}
-        local lang = vscode_servers[server.name]
+        --local vscode_servers = {html = "html", jsonls = "json", cssls = "css"}
+        --local lang = vscode_servers[server.name]
 
-        if lang ~= nil then
-            opts.cmd = {("vscode-" .. lang .. "-language-server"), "--stdio"}
-        end
+        --if lang ~= nil then
+        --    opts.cmd = {("vscode-" .. lang .. "-language-server"), "--stdio"}
+        --end
 
         if server.name == "tsserver" then
             opts.on_attach = tsserver_on_attach
