@@ -5,21 +5,29 @@ require("packer").startup(
         use "wbthomason/packer.nvim"
 
         -- OPENAI CODEX
-        use "tom-doerr/vim_codex"
+        --use "tom-doerr/vim_codex"
 
         -- NAVIGATION
         use {
             "phaazon/hop.nvim",
-            as = "hop",
+            --branch = "v1.2", -- optional but strongly recommended
             config = function()
                 -- you can configure Hop the way you like here; see :h hop-config
-                require "hop".setup {}
-                --require "hop".setup {keys = "etovxqpdygfblzhckisuran"}
+                require "hop".setup {keys = "etovxqpdygfblzhckisuran"}
             end
         }
+        --use {
+        --    "phaazon/hop.nvim",
+        --    as = "hop",
+        --    config = function()
+        --        -- you can configure Hop the way you like here; see :h hop-config
+        --        require "hop".setup {}
+        --        --require "hop".setup {keys = "etovxqpdygfblzhckisuran"}
+        --    end
+        --}
 
         -- TABLE
-        use "dhruvasagar/vim-table-mode"
+        --use "dhruvasagar/vim-table-mode"
 
         -- VIM THEMING
         --use "rafi/awesome-vim-colorschemes" -- vim themes
@@ -35,6 +43,7 @@ require("packer").startup(
         use "francoiscabrol/ranger.vim"
         use "vijaymarupudi/nvim-fzf"
         use "vijaymarupudi/nvim-fzf-commands"
+        use {"tpope/vim-obsession"}
 
         -- GIT
         use "tpope/vim-fugitive"
@@ -52,14 +61,23 @@ require("packer").startup(
         use "dense-analysis/ale"
         --use "nathanmsmith/nvim-ale-diagnostic"
         use "turbio/bracey.vim"
-        -- init.lua
         use "lukas-reineke/indent-blankline.nvim"
+        --use "sheerun/vim-polyglot"
+
+        -- SNIPPETS
+        use "SirVer/ultisnips"
+        use "honza/vim-snippets"
 
         -- LSP
+        use "hrsh7th/nvim-cmp" -- Autocompletion plugin
+        --use "saadparwaiz1/cmp_luasnip" -- Snippets source for nvim-cmp
         use {"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"}
         use "neovim/nvim-lspconfig" -- Collection of configurations for built-in LSP client
         use "williamboman/nvim-lsp-installer"
-        use "hrsh7th/cmp-nvim-lsp" -- LSP source for nvim-cmp
+        use {
+            "hrsh7th/cmp-nvim-lsp",
+            requires = "quangnguyen30192/cmp-nvim-ultisnips"
+        } -- LSP source for nvim-cmp
 
         use "nvim-lua/plenary.nvim"
         use "jose-elias-alvarez/nvim-lsp-ts-utils"
@@ -68,8 +86,6 @@ require("packer").startup(
         use "ThePrimeagen/harpoon"
 
         use "L3MON4D3/LuaSnip" -- Snippets plugin
-        use "hrsh7th/nvim-cmp" -- Autocompletion plugin
-        use "saadparwaiz1/cmp_luasnip" -- Snippets source for nvim-cmp
 
         -- JS
         use "HerringtonDarkholme/yats.vim"
@@ -79,7 +95,7 @@ require("packer").startup(
         --use "leafOfTree/vim-vue-plugin" -- vue syntax highlight & indent
 
         -- PYTHON
-        use {"numirias/semshi", run = ":UpdateRemotePlugins"} -- python
+        --use {"numirias/semshi", run = ":UpdateRemotePlugins"} -- python
         use "Vimjas/vim-python-pep8-indent"
 
         -- HTML/CSS

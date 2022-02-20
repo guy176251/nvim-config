@@ -19,7 +19,7 @@ map("n", "<Tab>", ":lua harpoon_bnext()<CR>")
 map("n", "<S-Tab>", ":lua harpoon_bprevious()<CR>")
 map("n", "<esc>", ":noh<cr><esc>", {silent = true}) --After searching, pressing escape stops the highlight
 
-map("n", "<Leader>w", [[:%s/\s\+$//e<CR>]])
+--map("n", "<Leader>w", [[:%s/\s\+$//e<CR>]])
 --map("n", "<Leader>x", ":Bclose <CR>")
 map("n", "<Leader>t", ":tabnew<CR>")
 
@@ -29,11 +29,21 @@ map("n", "<A-Left>", "<C-W><S-H>")
 map("n", "<A-Up>", "<C-W><S-K>")
 map("n", "<A-Down>", "<C-W><S-J>")
 
+--map("n", "<A-l>", "<C-W><S-L>")
+--map("n", "<A-h>", "<C-W><S-H>")
+--map("n", "<A-k>", "<C-W><S-K>")
+--map("n", "<A-j>", "<C-W><S-J>")
+
 -- Split navigations
 map("n", "<C-Right>", "<C-W><C-L>")
 map("n", "<C-Left>", "<C-W><C-H>")
 map("n", "<C-Up>", "<C-W><C-K>")
 map("n", "<C-Down>", "<C-W><C-J>")
+
+--map("n", "<C-l>", "<C-W><C-L>")
+--map("n", "<C-h>", "<C-W><C-H>")
+--map("n", "<C-k>", "<C-W><C-K>")
+--map("n", "<C-j>", "<C-W><C-J>")
 
 -- Resize split
 --map("n", "<A-j>", "<C-W>-")
@@ -81,18 +91,18 @@ map("v", "w", hopword, {silent = true})
 
 -- args: direction: bool, inclusive: bool
 -- inclusive is broken in hop as of this comment
-local hop_hint_char1 = function(args)
-    local direction = args.forward and "AFTER_CURSOR" or "BEFORE_CURSOR"
-    local inclusive = args.inclusive and "true" or "false"
-
-    return ("<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection." ..
-        direction .. ", current_line_only = true, inclusive_jump = " .. inclusive .. " })<cr>")
-end
-
-vim.api.nvim_set_keymap("", "f", hop_hint_char1({forward = true, inclusive = false}), {})
-vim.api.nvim_set_keymap("", "F", hop_hint_char1({forward = false, inclusive = false}), {})
-vim.api.nvim_set_keymap("", "t", hop_hint_char1({forward = true, inclusive = false}), {})
-vim.api.nvim_set_keymap("", "T", hop_hint_char1({forward = false, inclusive = false}), {})
+--local hop_hint_char1 = function(args)
+--    local direction = args.forward and "AFTER_CURSOR" or "BEFORE_CURSOR"
+--    local inclusive = args.inclusive and "true" or "false"
+--
+--    return ("<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection." ..
+--        direction .. ", current_line_only = true, inclusive_jump = " .. inclusive .. " })<cr>")
+--end
+--
+--vim.api.nvim_set_keymap("", "f", hop_hint_char1({forward = true, inclusive = false}), {})
+--vim.api.nvim_set_keymap("", "F", hop_hint_char1({forward = false, inclusive = false}), {})
+--vim.api.nvim_set_keymap("", "t", hop_hint_char1({forward = true, inclusive = false}), {})
+--vim.api.nvim_set_keymap("", "T", hop_hint_char1({forward = false, inclusive = false}), {})
 
 -- place this in one of your configuration file(s)
 --vim.api.nvim_set_keymap(
@@ -138,7 +148,7 @@ vim.api.nvim_set_keymap("", "T", hop_hint_char1({forward = false, inclusive = fa
 map("n", "<Leader>o", ":Files<CR>")
 --map("n", "<Leader>O", [[:lua vim.fn['fzf#vim#files']('~/')<CR>]])
 map("n", "<Leader>O", ":Files ~/<CR>")
-map("n", "<Leader>b", ":Buffers<CR>")
+map("n", "<Leader>p", ":Buffers<CR>")
 map("n", "<Leader>h", ":Helptags<CR>")
 map("n", "<Leader>;", ":History:<CR>")
 map("n", "<Leader>c", ":Commands<CR>")
@@ -160,6 +170,7 @@ map("n", "<Leader>gb", ":GBranches<CR>")
 ---------
 --map("n", "<c-k>", ":ALEPreviousWrap <CR>", {silent = true})
 --map("n", "<c-j>", ":ALENextWrap <CR>", {silent = true})
+map("n", "<space>f", ":ALEFix<CR>", {silent = true})
 
 -------------
 -- HARPOON --
@@ -167,9 +178,10 @@ map("n", "<Leader>gb", ":GBranches<CR>")
 
 --map("n", "<Leader>m", [[:lua require("harpoon.mark").add_file() <CR>]])
 map("n", "<Leader>x", ":lua harpoon_rm_file()<CR>")
---map("n", "<Leader>m", [[:lua harpoon_toggle_file()<CR>]])
-map("n", "<Leader>M", [[:lua harpoon_clear_all()<CR>]])
-map("n", "<Leader>l", [[:lua require("harpoon.ui").toggle_quick_menu()<CR>]])
+map("n", "<Leader>ma", [[:lua harpoon_toggle_file()<CR>]])
+map("n", "<Leader>mc", [[:lua harpoon_clear_all()<CR>]])
+map("n", "<Leader>ml", [[:lua require("harpoon.ui").toggle_quick_menu()<CR>]])
+map("n", "<Leader>mt", [[:lua harpoon_btoggle()<CR>]])
 
 --map("n", "<Leader>n", [[:lua require("harpoon.ui").nav_next() <CR>]])
 --map("n", "<Leader>N", [[:lua require("harpoon.ui").nav_prev() <CR>]])
@@ -177,12 +189,15 @@ map("n", "<Leader>l", [[:lua require("harpoon.ui").toggle_quick_menu()<CR>]])
 -----------
 -- CODEX --
 -----------
-local create_completion = ":lua vim.fn.CreateCompletion(200)<CR>"
-map("n", "<C-x>", create_completion)
-map("i", "<C-x>", ("<C-o>" .. create_completion))
+--local create_completion = ":lua vim.fn.CreateCompletion(200)<CR>"
+--local create_completion = ":lua vim.fn.CreateCompletionLine()<CR>"
+--map("n", "<C-x>", create_completion)
+--map("i", "<C-x>", ("<C-o>" .. create_completion))
 --map("i", "<C-x>", "<Esc>li<C-g>u<Esc>l:CreateCompletion<CR>")
 
 --------------
 -- NVIM FZF --
 --------------
-map("n", "<Leader>m", [[:lua fzf_buffer_add_to_harpoon()<CR>]])
+map("n", "<Leader>mm", [[:lua fzf_buffer_add_to_harpoon()<CR>]])
+map("n", "<Leader>mo", [[:lua fzf_files_to_harpoon()<CR>]])
+map("n", "<Leader>ml", [[:lua fzf_select_harpoon_mark()<CR>]])

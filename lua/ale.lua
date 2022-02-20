@@ -4,13 +4,14 @@ local g = vim.g
 g.ale_completion_enabled = false
 g.ale_linters_explicit = true
 
-g.ale_fix_on_save = true
+g.ale_fix_on_save = false
 g.ale_fixers = {
-    c = {"clang-format"},
+    --c = {"clang-format"},
     cpp = {"clang-format"},
     sh = {"shfmt"},
-    python = {"black"},
+    python = {"isort", "black"},
     lua = {"luafmt"},
+    json = {"prettier"},
     css = {"prettier"},
     scss = {"prettier"},
     html = {"prettier"},

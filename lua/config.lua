@@ -11,7 +11,6 @@ opt.autoindent = true
 opt.autoread = true
 --opt.autowrite = true
 opt.expandtab = true
-opt.foldenable = false
 opt.hlsearch = true
 opt.ignorecase = true
 opt.number = true
@@ -46,7 +45,17 @@ opt.titlestring = [[NVIM: [%{fnamemodify(getcwd(), ':t')}] %t]]
 opt.cursorline = true
 opt.cursorcolumn = true
 
--- disable highlight outside of search and replace
+--opt.foldlevel = 1
+opt.foldlevelstart = 10
+--opt.foldenable = false
+opt.foldmethod = "indent"
+--opt.foldmethod = "syntax"
+--opt.foldmethod = "expr"
+--opt.foldexpr = "nvim_treesitter#foldexpr()"
+
+-----------------------------------------------------
+-- DISABLE HIGHLIGHT OUTSIDE OF SEARCH AND REPLACE --
+-----------------------------------------------------
 vim.cmd [[
 " Enable highlighting all the matches in incsearch mode
 " But don't enable hlsearch always
@@ -57,13 +66,25 @@ augroup vimrc-incsearch-highlight
 augroup END
 ]]
 
+---------------
+-- PROVIDERS --
+---------------
+g.python3_host_prog = "/usr/bin/python3"
+
 ------------------
 -- ONEDARK.NVIM --
 ------------------
 --g.onedark_style = "cool"
-g.onedark_style = "darker"
-g.onedark_toggle_style_keymap = "<nop>"
+--g.onedark_style = "darker"
+--g.onedark_toggle_style_keymap = "<nop>"
 --g.onedark_darker_diagnostics = false
+
+-- Lua
+require("onedark").setup {
+    style = "darker",
+    toggle_style_key = "<nop>"
+}
+require("onedark").load()
 
 ----------------
 -- BCLOSE.VIM --
@@ -139,7 +160,7 @@ require("lualine").setup {
                 "buffers",
                 show_filename_only = false, -- shows shortened relative path when false
                 show_modified_status = true, -- shows indicator then bufder is modified
-                max_length = vim.o.columns * 6 / 7, -- maximum width of buffers component
+                max_length = vim.o.columns * 5 / 7, -- maximum width of buffers component
                 filetype_names = {
                     TelescopePrompt = "Telescope",
                     dashboard = "Dashboard",
@@ -228,8 +249,8 @@ require("fzf").default_options = {
 --    show_end_of_line = true
 --}
 --vim.opt.listchars:append("eol:↴")
+--vim.opt.listchars:append("space:⋅")
 vim.opt.list = true
-vim.opt.listchars:append("space:⋅")
 
 require("indent_blankline").setup {
     space_char_blankline = " ",

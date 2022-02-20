@@ -17,15 +17,70 @@ local has_words_before = function()
     return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
-local luasnip = require("luasnip")
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 local cmp = require("cmp")
 
+-- LUASNIP CMP THINGS
+--local luasnip = require("luasnip")
+--
+--local luasnip_expand = function(args)
+--    luasnip.lsp_expand(args.body)
+--end
+--
+--local luasnip_tab = cmp.mapping(
+--    function(fallback)
+--        if cmp.visible() then
+--            cmp.select_next_item()
+--        elseif luasnip.expand_or_jumpable() then
+--            luasnip.expand_or_jump()
+--        elseif has_words_before() then
+--            cmp.complete()
+--        else
+--            fallback()
+--        end
+--    end,
+--    {"i", "s"}
+--)
+--
+--local luasnip_shift_tab = cmp.mapping(
+--    function(fallback)
+--        if cmp.visible() then
+--            cmp.select_prev_item()
+--        elseif luasnip.jumpable(-1) then
+--            luasnip.jump(-1)
+--        else
+--            fallback()
+--        end
+--    end,
+--    {"i", "s"}
+--)
+
+-- CMP NVIM ULTISNIP
+local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
+local ultisnip = {
+    expand = function(args)
+        vim.fn["UltiSnips#Anon"](args.body)
+    end,
+    tab = cmp.mapping(
+        function(fallback)
+            --cmp_ultisnips_mappings.jump_forwards(fallback)
+            --cmp_ultisnips_mappings.compose({"jump_forwards", "select_next_item"})(fallback)
+            cmp_ultisnips_mappings.compose({"select_next_item"})(fallback)
+        end,
+        {"i", "s"}
+    ),
+    shift_tab = cmp.mapping(
+        function(fallback)
+            --cmp_ultisnips_mappings.jump_backwards(fallback)
+            cmp_ultisnips_mappings.compose({"select_prev_item"})(fallback)
+        end,
+        {"i", "s"}
+    )
+}
+
 cmp.setup {
     snippet = {
-        expand = function(args)
-            luasnip.lsp_expand(args.body)
-        end
+        expand = ultisnip.expand
     },
     mapping = {
         ["<C-p>"] = cmp.mapping.select_prev_item(),
@@ -38,36 +93,13 @@ cmp.setup {
             --behavior = cmp.ConfirmBehavior.Replace,
             select = true
         },
-        ["<Tab>"] = cmp.mapping(
-            function(fallback)
-                if cmp.visible() then
-                    cmp.select_next_item()
-                elseif luasnip.expand_or_jumpable() then
-                    luasnip.expand_or_jump()
-                elseif has_words_before() then
-                    cmp.complete()
-                else
-                    fallback()
-                end
-            end,
-            {"i", "s"}
-        ),
-        ["<S-Tab>"] = cmp.mapping(
-            function(fallback)
-                if cmp.visible() then
-                    cmp.select_prev_item()
-                elseif luasnip.jumpable(-1) then
-                    luasnip.jump(-1)
-                else
-                    fallback()
-                end
-            end,
-            {"i", "s"}
-        )
+        ["<Tab>"] = ultisnip.tab,
+        ["<S-Tab>"] = ultisnip.shift_tab
     },
     sources = {
         {name = "nvim_lsp"},
-        {name = "luasnip"}
+        --{name = "luasnip"},
+        {name = "ultisnips"}
     }
 }
 
@@ -108,8 +140,8 @@ local common_on_attach = function(client, bufnr)
         vim.api.nvim_buf_set_option(bufnr, ...)
     end
 
-    client.resolved_capabilities.document_formatting = false
-    client.resolved_capabilities.document_range_formatting = false
+    --client.resolved_capabilities.document_formatting = false
+    --client.resolved_capabilities.document_range_formatting = false
     -- Enable completion triggered by <c-x><c-o>
     buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 
@@ -120,16 +152,16 @@ local common_on_attach = function(client, bufnr)
     --buf_set_keymap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
     buf_set_keymap("n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
     buf_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-    buf_set_keymap("n", "<space>e", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-    buf_set_keymap("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
+    buf_set_keymap("n", "<space>e", "<cmd>lua vim.diagnostic.show_line_diagnostics()<CR>", opts)
+    buf_set_keymap("n", "<space>F", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+    buf_set_keymap("n", "<space>q", "<cmd>lua vim.diagnostic.set_loclist()<CR>", opts)
     buf_set_keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
     buf_set_keymap("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
     buf_set_keymap("n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
     buf_set_keymap("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
     buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-    buf_set_keymap("n", "<c-k>", "<cmd>lua vim.lsp.diagnostic.goto_prev({wrap = false})<CR>", opts)
-    buf_set_keymap("n", "<c-j>", "<cmd>lua vim.lsp.diagnostic.goto_next({wrap = false})<CR>", opts)
+    buf_set_keymap("n", "<C-[>", "<cmd>lua vim.diagnostic.goto_prev({wrap = true})<CR>", opts)
+    buf_set_keymap("n", "<C-]>", "<cmd>lua vim.diagnostic.goto_next({wrap = true})<CR>", opts)
     buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
     buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
     buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
@@ -191,7 +223,7 @@ require("nvim-lsp-installer").on_server_ready(
                 debounce_text_changes = 150
             },
             settings = {
-                format = {enable = false}
+                format = {enable = true}
             },
             handlers = {
                 ["textDocument/publishDiagnostics"] = vim.lsp.with(
@@ -224,6 +256,22 @@ require("nvim-lsp-installer").on_server_ready(
                     }
                 }
             }
+        elseif server.name == "diagnosticls" then
+            opts = {
+                filetypes = {"python"},
+                init_options = {
+                    formatters = {
+                        black = {
+                            command = "black",
+                            args = {"--quiet", "-"},
+                            rootPatterns = {"pyproject.toml", "setup.cfg"}
+                        },
+                        formatFiletypes = {
+                            python = {"black"}
+                        }
+                    }
+                }
+            }
         end
 
         server:setup(opts)
@@ -234,6 +282,7 @@ require("nvim-lsp-installer").on_server_ready(
 local lsp_installer_servers = require("nvim-lsp-installer.servers")
 local auto_servers = {
     "pylsp",
+    --"pyright",
     "sumneko_lua",
     "tsserver",
     "bashls",
@@ -241,7 +290,10 @@ local auto_servers = {
     "rust_analyzer",
     "html",
     "cssls",
-    "jsonls"
+    "jsonls",
+    "omnisharp",
+    "eslint"
+    --"diagnosticls"
     --"eslintls"
 }
 
