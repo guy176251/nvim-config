@@ -3,11 +3,11 @@ require("functions")
 
 --local fn = vim.fn -- to call Vim functions e.g. fn.bufnr()
 local function map(mode, lhs, rhs, opts)
-    local options = {noremap = true}
-    if opts then
-        options = vim.tbl_extend("force", options, opts)
-    end
-    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+	local options = { noremap = true }
+	if opts then
+		options = vim.tbl_extend("force", options, opts)
+	end
+	vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
 vim.g.mapleader = ","
@@ -17,7 +17,7 @@ map("v", "<C-C>", '"+y')
 --map("n", "<S-Tab>", ":bprevious<CR>")
 map("n", "<Tab>", ":lua harpoon_bnext()<CR>")
 map("n", "<S-Tab>", ":lua harpoon_bprevious()<CR>")
-map("n", "<esc>", ":noh<cr><esc>", {silent = true}) --After searching, pressing escape stops the highlight
+--map("n", "<esc>", ":noh<cr><esc>", { silent = true }) --After searching, pressing escape stops the highlight
 
 --map("n", "<Leader>w", [[:%s/\s\+$//e<CR>]])
 --map("n", "<Leader>x", ":Bclose <CR>")
@@ -84,10 +84,10 @@ local hopline = [[<cmd>lua require'hop'.hint_lines_skip_whitespace(]] .. hop_opt
 --map("n", "<m-w>", hopword, {silent = true})
 --map("v", "<m-w>", hopword, {silent = true})
 
-map("n", "W", hopline, {silent = true})
-map("v", "W", hopline, {silent = true})
-map("n", "w", hopword, {silent = true})
-map("v", "w", hopword, {silent = true})
+map("n", "W", hopline, { silent = true })
+map("v", "W", hopline, { silent = true })
+map("n", "w", hopword, { silent = true })
+map("v", "w", hopword, { silent = true })
 
 -- args: direction: bool, inclusive: bool
 -- inclusive is broken in hop as of this comment
@@ -152,7 +152,8 @@ map("n", "<Leader>p", ":Buffers<CR>")
 map("n", "<Leader>h", ":Helptags<CR>")
 map("n", "<Leader>;", ":History:<CR>")
 map("n", "<Leader>c", ":Commands<CR>")
-map("n", "<Leader>r", ":Rg<CR>")
+map("n", "<Leader>r", ":Rg <C-R><C-W><CR>")
+map("n", "<Leader>R", ":Rg<CR>")
 map("n", "<Leader>s", ":Lines<CR>")
 --map("n", "<Leader>[", ":Windows <CR>")
 
@@ -170,7 +171,7 @@ map("n", "<Leader>gb", ":GBranches<CR>")
 ---------
 --map("n", "<c-k>", ":ALEPreviousWrap <CR>", {silent = true})
 --map("n", "<c-j>", ":ALENextWrap <CR>", {silent = true})
-map("n", "<space>f", ":ALEFix<CR>", {silent = true})
+--map("n", "<space>f", ":ALEFix<CR>", {silent = true})
 
 -------------
 -- HARPOON --

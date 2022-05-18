@@ -6,27 +6,28 @@ g.ale_linters_explicit = true
 
 g.ale_fix_on_save = false
 g.ale_fixers = {
-    --c = {"clang-format"},
-    cpp = {"clang-format"},
-    sh = {"shfmt"},
-    python = {"isort", "black"},
-    lua = {"luafmt"},
-    json = {"prettier"},
-    css = {"prettier"},
-    scss = {"prettier"},
-    html = {"prettier"},
-    javascript = {"prettier"},
-    typescript = {"prettier"},
-    javascriptreact = {"prettier"},
-    typescriptreact = {"prettier"}
+	--c = {"clang-format"},
+	cpp = { "clang-format" },
+	sh = { "shfmt" },
+	python = { "isort", "black" },
+	lua = { "luafmt" },
+	json = { "prettier" },
+	css = { "prettier" },
+	scss = { "prettier" },
+	html = { "prettier" },
+	javascript = { "prettier" },
+	typescript = { "prettier" },
+	javascriptreact = { "prettier" },
+	typescriptreact = { "prettier" },
+	htmldjango = { "prettier" },
 }
 
 g.ale_linters = {
-    sh = {"bashate"}
-    --python = {"flake8"},
-    --cpp = {"g++"},
-    --html = {"tidy"},
-    --css = {"stylelint"}
+	sh = { "bashate" },
+	--python = {"flake8"},
+	--cpp = {"g++"},
+	--html = {"tidy"},
+	--css = {"stylelint"}
 }
 
 g.ale_lint_on_text_changed = "normal"

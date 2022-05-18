@@ -1,4 +1,4 @@
-vim.cmd [[
+vim.cmd([[
 
     " https://vim.fandom.com/wiki/Avoid_scrolling_when_switch_buffers
     " Save current view settings on a per-window, per-buffer basis.
@@ -27,4 +27,4 @@ vim.cmd [[
     autocmd BufLeave * call AutoSaveWinView()
     autocmd BufEnter * call AutoRestoreWinView()
 
-]]
+]])
