@@ -3,11 +3,11 @@ require("functions")
 
 --local fn = vim.fn -- to call Vim functions e.g. fn.bufnr()
 local function map(mode, lhs, rhs, opts)
-	local options = { noremap = true }
-	if opts then
-		options = vim.tbl_extend("force", options, opts)
-	end
-	vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+    local options = { noremap = true }
+    if opts then
+        options = vim.tbl_extend("force", options, opts)
+    end
+    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
 vim.g.mapleader = ","
@@ -202,3 +202,7 @@ map("n", "<Leader>mt", [[:lua harpoon_btoggle()<CR>]])
 map("n", "<Leader>mm", [[:lua fzf_buffer_add_to_harpoon()<CR>]])
 map("n", "<Leader>mo", [[:lua fzf_files_to_harpoon()<CR>]])
 map("n", "<Leader>ml", [[:lua fzf_select_harpoon_mark()<CR>]])
+
+-- RNVIMR
+-- https://github.com/kevinhwang91/rnvimr
+map("n", "<Leader>f", [[:RnvimrToggle<CR>]])

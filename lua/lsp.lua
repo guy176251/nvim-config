@@ -58,7 +58,7 @@ local config = {
 		buf_set_keymap("n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
 		buf_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
 		buf_set_keymap("n", "<space>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
-		buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+		buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>", opts)
 		buf_set_keymap("n", "<space>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
 		buf_set_keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
 		buf_set_keymap("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
@@ -223,8 +223,8 @@ require("nvim-lsp-installer").on_server_ready(function(server)
 
 	local on_attach_generic = function(client, bufnr)
 		-- Disables document formatting by lsp
-		client.resolved_capabilities.document_formatting = false
-		client.resolved_capabilities.document_range_formatting = false
+		client.server_capabilities.document_formatting = false
+		client.server_capabilities.document_range_formatting = false
 
 		config.on_attach(client, bufnr)
 	end
@@ -281,6 +281,7 @@ local auto_servers = {
 	"svelte",
 	"gopls",
 	"golangci_lint_ls",
+	"tailwindcss",
 }
 
 for _, s in ipairs(auto_servers) do
