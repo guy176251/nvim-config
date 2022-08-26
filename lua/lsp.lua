@@ -19,59 +19,60 @@
 local opt = vim.opt -- to set options
 
 vim.diagnostic.config({
-	virtual_text = true,
-	signs = true,
-	update_in_insert = false,
+    virtual_text = true,
+    signs = true,
+    update_in_insert = false,
 })
 
 local config = {
 
-	root_dir = require("lspconfig.util").root_pattern(
-		"manage.py",
-		"pyproject.toml",
-		"package.json",
-		".null-ls-root",
-		"Makefile",
-		".git"
-	),
+    root_dir = require("lspconfig.util").root_pattern(
+        "manage.py",
+        "pyproject.toml",
+        "package.json",
+        ".null-ls-root",
+        "Makefile",
+        ".git"
+    ),
 
-	on_attach = function(client, bufnr)
-		local function buf_set_keymap(...)
-			vim.api.nvim_buf_set_keymap(bufnr, ...)
-		end
-		local function buf_set_option(...)
-			vim.api.nvim_buf_set_option(bufnr, ...)
-		end
+    on_attach = function(client, bufnr)
+        local function buf_set_keymap(...)
+            vim.api.nvim_buf_set_keymap(bufnr, ...)
+        end
 
-		---- Disables document formatting by lsp
-		--client.resolved_capabilities.document_formatting = false
-		--client.resolved_capabilities.document_range_formatting = false
+        local function buf_set_option(...)
+            vim.api.nvim_buf_set_option(bufnr, ...)
+        end
 
-		-- Enable completion triggered by <c-x><c-o>
-		buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
+        ---- Disables document formatting by lsp
+        --client.resolved_capabilities.document_formatting = false
+        --client.resolved_capabilities.document_range_formatting = false
 
-		-- Mappings.
-		local opts = { noremap = true, silent = true }
+        -- Enable completion triggered by <c-x><c-o>
+        buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 
-		-- See `:help vim.lsp.*` for documentation on any of the below functions
-		buf_set_keymap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-		buf_set_keymap("n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
-		buf_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-		buf_set_keymap("n", "<space>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
-		buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>", opts)
-		buf_set_keymap("n", "<space>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
-		buf_set_keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-		buf_set_keymap("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
-		buf_set_keymap("n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
-		buf_set_keymap("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
-		buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-		buf_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev({wrap = true})<CR>", opts)
-		buf_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next({wrap = true})<CR>", opts)
-		buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-		buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-		buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-		buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-	end,
+        -- Mappings.
+        local opts = { noremap = true, silent = true }
+
+        -- See `:help vim.lsp.*` for documentation on any of the below functions
+        buf_set_keymap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+        buf_set_keymap("n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+        buf_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+        buf_set_keymap("n", "<space>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+        buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>", opts)
+        buf_set_keymap("n", "<space>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
+        buf_set_keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+        buf_set_keymap("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
+        buf_set_keymap("n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
+        buf_set_keymap("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
+        buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+        buf_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev({wrap = true})<CR>", opts)
+        buf_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next({wrap = true})<CR>", opts)
+        buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+        buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+        buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+        buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+    end,
 }
 
 --   .oooooo.   ooo        ooooo ooooooooo.
@@ -93,38 +94,38 @@ local cmp = require("cmp")
 -- CMP NVIM ULTISNIP
 local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
 local ultisnip = {
-	expand = function(args)
-		vim.fn["UltiSnips#Anon"](args.body)
-	end,
-	tab = cmp.mapping(function(fallback)
-		cmp_ultisnips_mappings.compose({ "select_next_item" })(fallback)
-	end, { "i", "s" }),
-	shift_tab = cmp.mapping(function(fallback)
-		cmp_ultisnips_mappings.compose({ "select_prev_item" })(fallback)
-	end, { "i", "s" }),
+    expand = function(args)
+        vim.fn["UltiSnips#Anon"](args.body)
+    end,
+    tab = cmp.mapping(function(fallback)
+        cmp_ultisnips_mappings.compose({ "select_next_item" })(fallback)
+    end, { "i", "s" }),
+    shift_tab = cmp.mapping(function(fallback)
+        cmp_ultisnips_mappings.compose({ "select_prev_item" })(fallback)
+    end, { "i", "s" }),
 }
 
 cmp.setup({
-	snippet = {
-		expand = ultisnip.expand,
-	},
-	mapping = {
-		["<C-p>"] = cmp.mapping.select_prev_item(),
-		["<C-n>"] = cmp.mapping.select_next_item(),
-		["<C-d>"] = cmp.mapping.scroll_docs(-4),
-		["<C-f>"] = cmp.mapping.scroll_docs(4),
-		["<C-Space>"] = cmp.mapping.complete(),
-		["<C-e>"] = cmp.mapping.close(),
-		["<CR>"] = cmp.mapping.confirm({
-			select = true,
-		}),
-		["<Tab>"] = ultisnip.tab,
-		["<S-Tab>"] = ultisnip.shift_tab,
-	},
-	sources = {
-		{ name = "nvim_lsp" },
-		{ name = "ultisnips" },
-	},
+    snippet = {
+        expand = ultisnip.expand,
+    },
+    mapping = {
+        ["<C-p>"] = cmp.mapping.select_prev_item(),
+        ["<C-n>"] = cmp.mapping.select_next_item(),
+        ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+        ["<C-f>"] = cmp.mapping.scroll_docs(4),
+        ["<C-Space>"] = cmp.mapping.complete(),
+        ["<C-e>"] = cmp.mapping.close(),
+        ["<CR>"] = cmp.mapping.confirm({
+            select = true,
+        }),
+        ["<Tab>"] = ultisnip.tab,
+        ["<S-Tab>"] = ultisnip.shift_tab,
+    },
+    sources = {
+        { name = "nvim_lsp" },
+        { name = "ultisnips" },
+    },
 })
 
 cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
@@ -141,44 +142,44 @@ local null_ls = require("null-ls")
 
 -- ORDER IN TABLE DETERMINES EXECUTION ORDER
 local sources = {
-	-- python
-	null_ls.builtins.diagnostics.flake8,
-	null_ls.builtins.diagnostics.mypy,
-	null_ls.builtins.formatting.black,
-	null_ls.builtins.formatting.isort,
-	-- js
-	null_ls.builtins.diagnostics.eslint,
-	null_ls.builtins.code_actions.eslint,
-	null_ls.builtins.formatting.prettier.with({
-		extra_filetypes = { "svelte" },
-	}),
-	-- lua
-	null_ls.builtins.formatting.stylua,
-	-- bash
-	null_ls.builtins.formatting.shfmt,
-	null_ls.builtins.diagnostics.shellcheck,
-	null_ls.builtins.code_actions.shellcheck,
-	-- cpp
-	null_ls.builtins.formatting.clang_format,
-	-- latex
-	null_ls.builtins.formatting.latexindent,
-	null_ls.builtins.diagnostics.chktex,
-	-- golang
-	null_ls.builtins.diagnostics.golangci_lint,
-	-- sql
-	--null_ls.builtins.diagnostics.sqlfluff.with({
-	--	--filetypes = { "sql", "html" },
-	--	args = { "lint", "--dialect", "ansi", "-f", "github-annotation", "-n", "--disable_progress_bar", "-" },
-	--}),
-	--null_ls.builtins.formatting.sqlfluff.with({
-	--	--filetypes = { "sql", "html" },
-	--	args = { "fix", "--dialect", "ansi", "--disable_progress_bar", "-f", "-n", "-" },
-	--}),
+    -- python
+    null_ls.builtins.diagnostics.flake8,
+    null_ls.builtins.diagnostics.mypy,
+    null_ls.builtins.formatting.black,
+    null_ls.builtins.formatting.isort,
+    -- js
+    null_ls.builtins.diagnostics.eslint,
+    null_ls.builtins.code_actions.eslint,
+    null_ls.builtins.formatting.prettier.with({
+        extra_filetypes = { "svelte" },
+    }),
+    -- lua
+    null_ls.builtins.formatting.stylua,
+    -- bash
+    null_ls.builtins.formatting.shfmt,
+    null_ls.builtins.diagnostics.shellcheck,
+    null_ls.builtins.code_actions.shellcheck,
+    -- cpp
+    null_ls.builtins.formatting.clang_format,
+    -- latex
+    null_ls.builtins.formatting.latexindent,
+    null_ls.builtins.diagnostics.chktex,
+    -- golang
+    null_ls.builtins.diagnostics.golangci_lint,
+    -- sql
+    --null_ls.builtins.diagnostics.sqlfluff.with({
+    --	--filetypes = { "sql", "html" },
+    --	args = { "lint", "--dialect", "ansi", "-f", "github-annotation", "-n", "--disable_progress_bar", "-" },
+    --}),
+    --null_ls.builtins.formatting.sqlfluff.with({
+    --	--filetypes = { "sql", "html" },
+    --	args = { "fix", "--dialect", "ansi", "--disable_progress_bar", "-f", "-n", "-" },
+    --}),
 }
 null_ls.setup({
-	sources = sources,
-	on_attach = config.on_attach,
-	root_dir = config.root_dir,
+    sources = sources,
+    on_attach = config.on_attach,
+    root_dir = config.root_dir,
 })
 
 -- ooooo         .oooooo..o ooooooooo.        ooooo                          .             oooo  oooo
@@ -190,103 +191,111 @@ null_ls.setup({
 -- o888ooooood8 8""88888P'  o888o             o888o o888o o888o 8""888P'   "888" `Y888""8o o888o o888o `Y8bod8P' d888b
 
 local on_attach_tsserver = function(client, bufnr)
-	local ts_utils = require("nvim-lsp-ts-utils")
-	ts_utils.setup({
-		eslint_bin = "eslint_d",
-		eslint_enable_diagnostics = true,
-		eslint_enable_code_actions = true,
-		enable_import_on_completion = true,
-		filter_out_diagnostics_by_severity = {
-			"information",
-			"hint",
-			--"warning",
-			--"error",
-		},
-	})
-	ts_utils.setup_client(client)
+    local ts_utils = require("nvim-lsp-ts-utils")
+    ts_utils.setup({
+        eslint_bin = "eslint_d",
+        eslint_enable_diagnostics = true,
+        eslint_enable_code_actions = true,
+        enable_import_on_completion = true,
+        filter_out_diagnostics_by_severity = {
+            "information",
+            "hint",
+            --"warning",
+            --"error",
+        },
+    })
+    ts_utils.setup_client(client)
 
-	-- no default maps, so you may want to define some here
-	local o = { silent = true }
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TSLspOrganize<CR>", o)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "rN", ":TSLspRenameFile<CR>", o)
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "gI", ":TSLspImportAll<CR>", o)
+    -- no default maps, so you may want to define some here
+    local o = { silent = true }
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TSLspOrganize<CR>", o)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "rN", ":TSLspRenameFile<CR>", o)
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "gI", ":TSLspImportAll<CR>", o)
 end
 
 require("nvim-lsp-installer").on_server_ready(function(server)
-	--Enable (broadcasting) snippet capability for completion
-	local capabilities = vim.lsp.protocol.make_client_capabilities()
-	capabilities.textDocument.completion.completionItem.snippetSupport = true
+    --Enable (broadcasting) snippet capability for completion
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-	local disable_diag = {
-		["textDocument/publishDiagnostics"] = function() end,
-	}
+    local disable_diag = {
+        ["textDocument/publishDiagnostics"] = function() end,
+    }
 
-	local on_attach_generic = function(client, bufnr)
-		-- Disables document formatting by lsp
-		client.server_capabilities.document_formatting = false
-		client.server_capabilities.document_range_formatting = false
+    local on_attach_generic = function(client, bufnr)
+        -- Disables document formatting by lsp
+        client.server_capabilities.document_formatting = false
+        client.server_capabilities.document_range_formatting = false
 
-		config.on_attach(client, bufnr)
-	end
+        config.on_attach(client, bufnr)
+    end
 
-	local opts = {
-		on_attach = on_attach_generic,
-		capabilities = capabilities,
-		flags = {
-			debounce_text_changes = 150,
-		},
-		settings = {
-			format = { enable = true },
-		},
-		root_dir = config.root_dir,
-	}
+    local opts = {
+        on_attach = on_attach_generic,
+        capabilities = capabilities,
+        flags = {
+            debounce_text_changes = 150,
+        },
+        settings = {
+            format = { enable = true },
+        },
+        root_dir = config.root_dir,
+    }
 
-	if server.name == "tsserver" then
-		opts.on_attach = function(...)
-			on_attach_tsserver(...)
-			on_attach_generic(...)
-		end
-	elseif server.name == "sumneko_lua" then
-		opts.settings.Lua = {
-			diagnostics = {
-				globals = {
-					"vim",
-					"awesome",
-					"client",
-				},
-			},
-		}
-	end
+    if server.name == "tsserver" then
+        opts.on_attach = function(...)
+            on_attach_tsserver(...)
+            on_attach_generic(...)
+        end
+    elseif server.name == "sumneko_lua" then
+        opts.settings.Lua = {
+            diagnostics = {
+                globals = {
+                    "vim",
+                    "awesome",
+                    "client",
+                },
+            },
+        }
+    elseif server.name == "html" then
+        opts.filetypes = { "html", "htmldjango" }
+    elseif server.name == "tailwindcss" then
+        opts.init_options = {
+            userLanguages = {
+                htmldjango = "html",
+            },
+        }
+    end
 
-	server:setup(opts)
-	vim.cmd([[do User LspAttachBuffers]])
+    server:setup(opts)
+    vim.cmd([[do User LspAttachBuffers]])
 end)
 
 local lsp_installer_servers = require("nvim-lsp-installer.servers")
 local auto_servers = {
-	--"pylsp",
-	--"pyright",
-	"sumneko_lua",
-	"tsserver",
-	"bashls",
-	"vimls",
-	"rust_analyzer",
-	"html",
-	"cssls",
-	"jsonls",
-	--"omnisharp",
-	"ltex",
-	"jedi_language_server",
-	"vuels",
-	"svelte",
-	"gopls",
-	"golangci_lint_ls",
-	"tailwindcss",
+    --"pylsp",
+    --"pyright",
+    "sumneko_lua",
+    "tsserver",
+    "bashls",
+    "vimls",
+    "rust_analyzer",
+    "html",
+    "cssls",
+    "jsonls",
+    --"omnisharp",
+    "ltex",
+    "jedi_language_server",
+    "vuels",
+    "svelte",
+    "gopls",
+    "golangci_lint_ls",
+    "tailwindcss",
 }
 
 for _, s in ipairs(auto_servers) do
-	local ok, server = lsp_installer_servers.get_server(s)
-	if ok and not server:is_installed() then
-		server:install()
-	end
+    local ok, server = lsp_installer_servers.get_server(s)
+    if ok and not server:is_installed() then
+        server:install()
+    end
 end
