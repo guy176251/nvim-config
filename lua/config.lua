@@ -56,6 +56,8 @@ opt.foldmethod = "indent"
 --opt.foldmethod = "expr"
 --opt.foldexpr = "nvim_treesitter#foldexpr()"
 
+opt.termguicolors = false
+
 -----------------------------------------------------
 -- DISABLE HIGHLIGHT OUTSIDE OF SEARCH AND REPLACE --
 -----------------------------------------------------
