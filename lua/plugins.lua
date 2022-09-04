@@ -64,6 +64,7 @@ require("packer").startup(function()
     --use "saadparwaiz1/cmp_luasnip" -- Snippets source for nvim-cmp
     use("p00f/nvim-ts-rainbow")
     use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
+    use("nvim-treesitter/nvim-treesitter-context")
     use("neovim/nvim-lspconfig") -- Collection of configurations for built-in LSP client
     use("williamboman/nvim-lsp-installer")
     use({
