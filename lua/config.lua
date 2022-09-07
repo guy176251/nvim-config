@@ -238,7 +238,8 @@ require("harpoon").setup({
 -- NVIM FZF --
 --------------
 require("fzf").default_options = {
-    fzf_cli_args = " --height 100% --preview='bat --color=always --style=header,grid --line-range :300 {}' ",
+    --fzf_cli_args = " --height 100% --preview='bat --color=always --style=header,grid --line-range :300 {}' ",
+    fzf_cli_args = " --height 100% --preview='[[ -n \"$(command -v bat)\" ]] && bat --color=always --style=header,grid --line-range :300 {} || strings {+}' ",
 }
 
 ----------------------
