@@ -51,10 +51,10 @@ opt.cursorcolumn = true
 --opt.foldlevel = 1
 opt.foldlevelstart = 10
 --opt.foldenable = false
-opt.foldmethod = "indent"
+--opt.foldmethod = "indent"
 --opt.foldmethod = "syntax"
---opt.foldmethod = "expr"
---opt.foldexpr = "nvim_treesitter#foldexpr()"
+opt.foldmethod = "expr"
+opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 opt.termguicolors = false
 
