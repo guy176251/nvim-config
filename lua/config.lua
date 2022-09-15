@@ -61,15 +61,15 @@ opt.termguicolors = false
 -----------------------------------------------------
 -- DISABLE HIGHLIGHT OUTSIDE OF SEARCH AND REPLACE --
 -----------------------------------------------------
-vim.cmd([[
-" Enable highlighting all the matches in incsearch mode
-" But don't enable hlsearch always
-augroup vimrc-incsearch-highlight
-  autocmd!
-  autocmd CmdlineEnter [/\?:] :set hlsearch
-  autocmd CmdlineLeave [/\?:] :set nohlsearch
-augroup END
-]])
+--vim.cmd([[
+--" Enable highlighting all the matches in incsearch mode
+--" But don't enable hlsearch always
+--augroup vimrc-incsearch-highlight
+--  autocmd!
+--  autocmd CmdlineEnter [/\?:] :set hlsearch
+--  autocmd CmdlineLeave [/\?:] :set nohlsearch
+--augroup END
+--]])
 
 ---------------
 -- PROVIDERS --
@@ -123,7 +123,7 @@ require("nvim-treesitter.configs").setup({
         extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
         max_file_lines = nil, -- Do not enable for files with more than n lines, int
         -- colors = {}, -- table of hex strings
-        -- termcolors = {} -- table of colour name strings
+        --termcolors = {},
     },
 })
 
