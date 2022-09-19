@@ -34,7 +34,7 @@ require("packer").startup(function()
     use("kevinhwang91/rnvimr")
     use("vijaymarupudi/nvim-fzf")
     use("vijaymarupudi/nvim-fzf-commands")
-    use({ "tpope/vim-obsession" })
+    --use({ "tpope/vim-obsession" })
 
     -- GIT
     use("tpope/vim-fugitive")
