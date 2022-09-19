@@ -22,9 +22,9 @@ require("packer").startup(function()
     -- VIM THEMING
     --use "rafi/awesome-vim-colorschemes" -- vim themes
     use("navarasu/onedark.nvim")
-    use("projekt0n/github-nvim-theme")
-    use("wojciechkepka/vim-github-dark")
-    use("folke/tokyonight.nvim")
+    --use("projekt0n/github-nvim-theme")
+    --use("wojciechkepka/vim-github-dark")
+    --use("folke/tokyonight.nvim")
 
     -- FILE MANAGEMENT
     use("junegunn/fzf")
