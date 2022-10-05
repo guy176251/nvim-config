@@ -168,10 +168,10 @@ local sources = {
     -- cpp
     null_ls.builtins.formatting.clang_format,
     -- latex
-    null_ls.builtins.formatting.latexindent,
-    null_ls.builtins.diagnostics.chktex,
+    --null_ls.builtins.formatting.latexindent,
+    --null_ls.builtins.diagnostics.chktex,
     -- golang
-    null_ls.builtins.diagnostics.golangci_lint,
+    --null_ls.builtins.diagnostics.golangci_lint,
     -- sql
     --null_ls.builtins.diagnostics.sqlfluff.with({
     --	--filetypes = { "sql", "html" },
@@ -279,8 +279,6 @@ end)
 
 local lsp_installer_servers = require("nvim-lsp-installer.servers")
 local auto_servers = {
-    --"pylsp",
-    --"pyright",
     "sumneko_lua",
     "tsserver",
     "bashls",
@@ -289,14 +287,11 @@ local auto_servers = {
     "html",
     "cssls",
     "jsonls",
-    --"omnisharp",
-    "ltex",
-    "jedi_language_server",
-    "vuels",
+    --"jedi_language_server",
+    "pylsp",
     "svelte",
-    "gopls",
-    "golangci_lint_ls",
     "tailwindcss",
+    "zls",
 }
 
 for _, s in ipairs(auto_servers) do

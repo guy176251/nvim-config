@@ -13,8 +13,3 @@ require("lsp")
 --vim.opt.background = "light"
 --vim.opt.background = "dark"
 vim.cmd("colorscheme onedark")
-
---vim.cmd("colorscheme ghdark")
---vim.cmd("colorscheme github_dark_default")
---vim.cmd("colorscheme tokyonight")
---vim.cmd('hi rainbowcol1 guifg=#ffffff')

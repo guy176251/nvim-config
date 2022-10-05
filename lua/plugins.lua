@@ -89,7 +89,7 @@ require("packer").startup(function()
 
     -- PYTHON
     --use {"numirias/semshi", run = ":UpdateRemotePlugins"} -- python
-    use("Vimjas/vim-python-pep8-indent")
+    --use("Vimjas/vim-python-pep8-indent")
     --use("petobens/poet-v")
 
     -- HTML/CSS
@@ -113,4 +113,7 @@ require("packer").startup(function()
     --        })
     --    end,
     --})
+
+    -- ZIG
+    use("ziglang/zig.vim")
 end)
