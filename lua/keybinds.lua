@@ -46,10 +46,10 @@ map("n", "<C-Down>", "<C-W><C-J>")
 --map("n", "<C-j>", "<C-W><C-J>")
 
 -- Resize split
---map("n", "<A-j>", "<C-W>-")
---map("n", "<A-k>", "<C-W>+")
---map("n", "<A-h>", "<C-W><")
---map("n", "<A-l>", "<C-W>>")
+--map("n", "-", "<C-W>-")
+--map("n", "+", "<C-W>+")
+--map("n", "(", "<C-W><")
+--map("n", ")", "<C-W>>")
 
 -- Scroll viewport
 map("n", "<S-Up>", "<C-Y>")
@@ -71,6 +71,11 @@ map("v", "y", "ygv<Esc>")
 -- map Enter to switch tabs
 --map("n", "<Enter>", ":tabnext<CR>")
 --map("n", "<Backspace>", ":tabprevious<CR>")
+
+-- Terminal binds
+map("t", "<Esc>", [[<C-\><C-n>]])
+map("n", [[<Leader>\]], ':split | term<CR>')
+map("n", [[<Leader>|]], ':vsplit | term<CR>')
 
 ---------
 -- HOP --
