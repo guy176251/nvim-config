@@ -1,6 +1,6 @@
-local use = require("packer").use
-
 require("packer").startup(function()
+    local use = require("packer").use
+
     use("wbthomason/packer.nvim")
 
     -- OPENAI CODEX
@@ -29,8 +29,6 @@ require("packer").startup(function()
     -- FILE MANAGEMENT
     use("junegunn/fzf")
     use("junegunn/fzf.vim")
-    use("rbgrouleff/bclose.vim")
-    --use("francoiscabrol/ranger.vim")
     use("kevinhwang91/rnvimr")
     use("vijaymarupudi/nvim-fzf")
     use("vijaymarupudi/nvim-fzf-commands")
@@ -48,10 +46,6 @@ require("packer").startup(function()
 
     -- EDITOR
     use("windwp/nvim-autopairs")
-    --use "jiangmiao/auto-pairs"
-    --use "dense-analysis/ale"
-    --use "nathanmsmith/nvim-ale-diagnostic"
-    use("turbio/bracey.vim")
     use("lukas-reineke/indent-blankline.nvim")
     --use "sheerun/vim-polyglot"
 
@@ -61,7 +55,6 @@ require("packer").startup(function()
 
     -- LSP
     use("hrsh7th/nvim-cmp") -- Autocompletion plugin
-    --use "saadparwaiz1/cmp_luasnip" -- Snippets source for nvim-cmp
     use("p00f/nvim-ts-rainbow")
     use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
     use("nvim-treesitter/nvim-treesitter-context")
@@ -85,12 +78,10 @@ require("packer").startup(function()
     use("chemzqm/vim-jsx-improve")
     use("yuezk/vim-js") -- js
     use("maxmellon/vim-jsx-pretty") -- react/tsx syntax highlight & indent
-    --use "leafOfTree/vim-vue-plugin" -- vue syntax highlight & indent
 
     -- PYTHON
     --use {"numirias/semshi", run = ":UpdateRemotePlugins"} -- python
-    use("Vimjas/vim-python-pep8-indent")
-    --use("petobens/poet-v")
+    --use("Vimjas/vim-python-pep8-indent")
 
     -- HTML/CSS
     use("mattn/emmet-vim")
@@ -104,15 +95,6 @@ require("packer").startup(function()
             })
         end,
     })
-    --use({
-    --    "olimorris/persisted.nvim",
-    --    config = function()
-    --        require("persisted").setup({
-    --            use_git_branch = true,
-    --            autoload = true,
-    --        })
-    --    end,
-    --})
 
     -- ZIG
     use("ziglang/zig.vim")

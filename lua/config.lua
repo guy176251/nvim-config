@@ -2,7 +2,8 @@
 vim.cmd([[au BufRead,BufNewFile .env.* set filetype=sh]])
 -- Dockerfile file highlighting
 vim.cmd([[au BufRead,BufNewFile Dockerfile.* set filetype=dockerfile]])
-vim.cmd([[au BufWrite * normal zx]])
+-- redo folds on write
+--vim.cmd([[au BufWrite * normal zx]])
 -- jinja highlighting
 vim.cmd([[au BufRead,BufNewFile *.jinja set filetype=html]])
 
@@ -63,6 +64,8 @@ end
 
 opt.termguicolors = false
 
+vim.cmd([[hi CursorLine cterm=NONE ctermbg=darkgray ctermfg=white]])
+
 -----------------------------------------------------
 -- DISABLE HIGHLIGHT OUTSIDE OF SEARCH AND REPLACE --
 -----------------------------------------------------
@@ -79,12 +82,12 @@ opt.termguicolors = false
 ---------------
 -- PROVIDERS --
 ---------------
-local pyenv_root = vim.env.PYENV_ROOT
-if pyenv_root ~= nil then
-    g.python3_host_prog = pyenv_root .. "/shims/python3"
-else
-    g.python3_host_prog = "/usr/bin/python3"
-end
+--local pyenv_root = vim.env.PYENV_ROOT
+--if pyenv_root ~= nil then
+--    g.python3_host_prog = pyenv_root .. "/shims/python3"
+--else
+--    g.python3_host_prog = "/usr/bin/python3"
+--end
 
 ------------------
 -- ONEDARK.NVIM --
