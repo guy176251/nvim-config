@@ -36,9 +36,13 @@ function M.fzf()
     map("n", "<Leader>r", ":Rg <C-R><C-W><CR>")
     map("n", "<Leader>R", ":Rg<CR>")
     map("n", "<Leader>s", ":Lines<CR>")
-    map("n", "<Leader>gf", ":GFiles<CR>")
-    map("n", "<Leader>gn", ":GFiles?<CR>")
+    map("n", "<Leader>gl", ":GFiles<CR>")
+    map("n", "<Leader>gs", ":GFiles?<CR>")
     map("n", "<Leader>gc", ":Commits<CR>")
+end
+
+function M.fzf_checkout()
+    map("n", "<Leader>gb", ":GBranches<CR>")
 end
 
 function M.rnvimr()
@@ -70,10 +74,6 @@ function M.auto_session()
         auto_session_suppress_dirs = { "~/", "~/Projects" },
         auto_session_use_git_branch = true,
     })
-end
-
-function M.fzf_checkout()
-    map("n", "<Leader>gb", ":GBranches<CR>")
 end
 
 function M.indent_blankline()

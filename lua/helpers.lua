@@ -71,4 +71,9 @@ function M.lsp_config_defaults()
     }
 end
 
+function M.set_tab(length)
+    vim.bo.shiftwidth = length
+    vim.bo.tabstop = length
+end
+
 return M

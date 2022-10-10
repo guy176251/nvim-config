@@ -1,9 +1,7 @@
 -- SHOULD NOT CONTAIN ANY SETTINGS RELATED TO EXTERNAL PLUGINS
 -- OR CUSTOM CODE YOU YOURSELF WROTE.
 
-local helpers = require("helpers")
-local map = helpers.map
-
+local map = require("helpers").map
 local opt = vim.opt
 local g = vim.g
 
@@ -53,6 +51,20 @@ map("t", "<C-Space>", [[<C-\><C-n>]])
 map("n", [[<Leader>\]], ":" .. term_command .. "<CR>")
 map("n", [[<Leader>|]], ":v" .. term_command .. "<CR>")
 
+-- Move cursor relative to visual line breaks
+local function silent_map(mode, lhs, rhs)
+    map(mode, lhs, rhs, { silent = true })
+end
+
+silent_map("n", "<Up>", "gk")
+silent_map("n", "<Down>", "gj")
+silent_map("n", "<Home>", "g<Home>")
+silent_map("n", "<End>", "g<End>")
+
+silent_map("i", "<Up>", "<C-o>gk")
+silent_map("i", "<Down>", "<C-o>gj")
+silent_map("i", "<Home>", "<C-o>g<Home>")
+silent_map("i", "<End>", "<C-o>g<End>")
 
 opt.autoindent = true
 opt.autoread = true

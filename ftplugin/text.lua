@@ -1,13 +1,7 @@
-local function local_map(mode, lhs, rhs, opts)
-	local options = { noremap = true }
-	if opts then
-		options = vim.tbl_extend("force", options, opts)
-	end
-	vim.api.nvim_buf_set_keymap(0, mode, lhs, rhs, options)
-end
+local map = require("helpers").map
 
 local function silent_map(mode, lhs, rhs)
-	local_map(mode, lhs, rhs, { silent = true })
+    map(mode, lhs, rhs, { silent = true })
 end
 
 silent_map("n", "<Up>", "gk")

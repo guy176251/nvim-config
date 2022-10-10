@@ -1,3 +1,4 @@
+require("plugins.install_packer")
 require("plugins.startup")
 
 local config = require("plugins.config")
