@@ -11,6 +11,7 @@ end
 function M.lsp_config_defaults()
     return {
         root_dir = require("lspconfig.util").root_pattern(
+            ".ccls",
             "manage.py",
             "pyproject.toml",
             "package.json",

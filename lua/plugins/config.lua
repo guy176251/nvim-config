@@ -174,7 +174,7 @@ function M.nvim_treesitter()
         },
         rainbow = {
             enable = true,
-            disable = ts_visual_disable,
+            disable = vim.tbl_extend("force", ts_visual_disable, { [5] = "svelte" }),
             extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
             max_file_lines = nil, -- Do not enable for files with more than n lines, int
             -- colors = {}, -- table of hex strings
@@ -316,6 +316,7 @@ function M.null_ls()
         null_ls.builtins.diagnostics.mypy,
         null_ls.builtins.formatting.black,
         null_ls.builtins.formatting.isort,
+        --null_ls.builtins.diagnostics.djlint,
         -- js
         null_ls.builtins.diagnostics.eslint,
         null_ls.builtins.code_actions.eslint,

@@ -46,7 +46,8 @@ map("i", "<S-Down>", "<C-X><C-E>")
 map("v", "y", "ygv<Esc>")
 
 -- Terminal binds
-local term_command = "split | set norelativenumber | set nonumber | term"
+--local term_command = "split | set norelativenumber | set nonumber | term"
+local term_command = "split | term"
 map("t", "<C-Space>", [[<C-\><C-n>]])
 map("n", [[<Leader>\]], ":" .. term_command .. "<CR>")
 map("n", [[<Leader>|]], ":v" .. term_command .. "<CR>")
