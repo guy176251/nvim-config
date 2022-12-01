@@ -165,19 +165,35 @@ function M.lualine()
 end
 
 function M.nvim_treesitter()
-    local ts_visual_disable = { "typescript", "tsx", "html", "javascript" }
+    local highlight_disable = {
+        typescript = true,
+        tsx = true,
+        html = true,
+        javascript = true,
+        cpp = true,
+    }
+    local rainbow_disable = vim.tbl_extend("force", highlight_disable, { svelte = true })
+
+    local too_many_lines = function(bufnr)
+        return vim.api.nvim_buf_line_count(bufnr) > 5000
+    end
+
     require("nvim-treesitter.configs").setup({
         ensure_installed = "all",
         highlight = {
             enable = true,
-            disable = ts_visual_disable,
+            disable = function(lang, bufnr)
+                return highlight_disable[lang] or too_many_lines(bufnr)
+            end,
         },
         rainbow = {
             enable = true,
-            disable = vim.tbl_extend("force", ts_visual_disable, { [5] = "svelte" }),
+            disable = function(lang, bufnr)
+                return rainbow_disable[lang] or too_many_lines(bufnr)
+            end,
             extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
             max_file_lines = nil, -- Do not enable for files with more than n lines, int
-            -- colors = {}, -- table of hex strings
+            --colors = {}, -- table of hex strings
             --termcolors = {},
         },
     })
@@ -274,6 +290,8 @@ function M.nvim_lsp_installer()
                     htmldjango = "html",
                 },
             }
+        elseif server.name == "ccls" then
+            opts.capabilities.offsetEncoding = { "utf-32" }
         end
 
         server:setup(opts)
@@ -336,6 +354,10 @@ function M.null_ls()
         sources = sources,
         on_attach = config.on_attach,
         root_dir = config.root_dir,
+        -- removed error "warning: multiple different client offset_encodings detected for buffer, this is not supported yet"
+        --on_init = function(client, _)
+        --    client.offset_encoding = "utf-32"
+        --end,
     })
 end
 
