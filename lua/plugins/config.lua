@@ -2,6 +2,10 @@ local helpers = require("helpers")
 local map = helpers.map
 local lsp_config_defaults = helpers.lsp_config_defaults
 
+local function nmap(...)
+    map("n", ...)
+end
+
 local M = {}
 
 function M.hop()
@@ -66,6 +70,8 @@ function M.harpoon()
             excluded_filetypes = { "harpoon" },
         },
     })
+    nmap("<Leader>a", ":lua require('harpoon.mark').add_file()<CR>")
+    nmap("<Leader>m", ":lua require('harpoon.ui').toggle_quick_menu()<CR>")
 end
 
 function M.auto_session()
