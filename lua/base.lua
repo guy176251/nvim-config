@@ -121,6 +121,8 @@ opt.textwidth = 0
 opt.foldmethod = "indent"
 opt.foldlevelstart = 10
 
+opt.mouse = ""
+
 vim.cmd([[hi CursorLine cterm=NONE ctermbg=darkgray ctermfg=white]])
 vim.cmd([[au BufRead,BufNewFile .env.* set filetype=sh]])
 vim.cmd([[au BufRead,BufNewFile Dockerfile.* set filetype=dockerfile]])
