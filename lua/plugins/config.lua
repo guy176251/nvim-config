@@ -34,15 +34,15 @@ function M.fzf()
     map("n", "<Leader>O", ":Files ~/<CR>")
     map("n", "<Leader>p", ":Buffers<CR>")
     map("n", "<Leader>h", ":Helptags<CR>")
-    map("n", "<Leader>H", ":Helptags <C-R><C-W><CR>")
     map("n", "<Leader>;", ":History:<CR>")
     map("n", "<Leader>c", ":Commands<CR>")
     map("n", "<Leader>r", ":Rg <C-R><C-W><CR>")
     map("n", "<Leader>R", ":Rg<CR>")
-    map("n", "<Leader>s", ":Lines<CR>")
+    map("n", "<Leader>s", ":BLines<CR>")
     map("n", "<Leader>gl", ":GFiles<CR>")
     map("n", "<Leader>gs", ":GFiles?<CR>")
     map("n", "<Leader>gc", ":Commits<CR>")
+    map("n", "<Leader>l", ":lua require('fzf_funcs').cwd()<CR>")
 end
 
 function M.fzf_checkout()
@@ -55,7 +55,6 @@ end
 
 function M.nvim_fzf()
     require("fzf").default_options = {
-        --fzf_cli_args = " --height 100% --preview='bat --color=always --style=header,grid --line-range :300 {}' ",
         fzf_cli_args = " --height 100% --preview='[[ -n \"$(command -v bat)\" ]] && bat --color=always --style=header,grid --line-range :300 {} || strings {+}' ",
     }
 end
@@ -93,6 +92,32 @@ function M.indent_blankline()
 end
 
 function M.lualine()
+    -- Out of 6 total columns
+    local function columns(num)
+        return vim.o.columns * num / 6
+    end
+
+    -- config options
+    local function buffer_window(type, cond)
+        return {
+            type,
+            cond = cond,
+            show_filename_only = true,
+            show_modified_status = true,
+            max_length = function()
+                return columns(5)
+            end,
+            filetype_names = {
+                TelescopePrompt = "Telescope",
+                dashboard = "Dashboard",
+                packer = "Packer",
+                fzf = "FZF",
+                alpha = "Alpha",
+                ["lsp-installer"] = "LSP Installer",
+            },
+        }
+    end
+
     require("lualine").setup({
         options = { theme = "onedark", icons_enabled = true },
         sections = {
@@ -127,43 +152,24 @@ function M.lualine()
         tabline = {
             lualine_a = {
                 {
-                    "buffers",
-                    show_filename_only = false, -- shows shortened relative path when false
-                    show_modified_status = true, -- shows indicator then bufder is modified
+                    "tabs",
                     max_length = function()
-                        return vim.o.columns * 5 / 6
-                    end, -- maximum width of buffers component
-                    filetype_names = {
-                        TelescopePrompt = "Telescope",
-                        dashboard = "Dashboard",
-                        packer = "Packer",
-                        fzf = "FZF",
-                        alpha = "Alpha",
-                        ["lsp-installer"] = "LSP Installer",
-                    }, -- shows specific buffer name for that filetype ( { `filetype` = `buffer_name`, ... } )
-                    buffers_color = {
-                        active = nil, -- color for active buffer
-                        inactive = nil, -- color for inactive buffer
-                    },
+                        return columns(1)
+                    end,
                 },
             },
-            lualine_b = {},
+            lualine_b = {
+                buffer_window("windows", function()
+                    return require("dynamic_tab").window_mode()
+                end),
+                buffer_window("buffers", function()
+                    return not require("dynamic_tab").window_mode()
+                end),
+            },
             lualine_c = {},
             lualine_x = {},
             lualine_y = {},
             lualine_z = {
-                {
-                    [[string.format("Tab %d/%d", vim.fn.tabpagenr(), vim.fn.tabpagenr('$'))]],
-                    cond = function()
-                        return vim.fn.tabpagenr("$") > 1
-                    end,
-                },
-                {
-                    [[harpoon_status()]],
-                    cond = function()
-                        return require("harpoon.mark").get_length() > 0
-                    end,
-                },
             },
         },
         extensions = {},

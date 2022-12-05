@@ -7,14 +7,19 @@ local g = vim.g
 
 g.mapleader = ","
 
-map("v", "<C-C>", '"+y')
-map("n", "<Tab>", ":bnext<CR>")
-map("n", "<S-Tab>", ":bprevious<CR>")
-map("n", "<Esc>", ":noh<CR><Esc>", { silent = true }) --After searching, pressing escape stops the highlight
+-- Move cursor relative to visual line breaks
+local function silent_map(mode, lhs, rhs)
+    map(mode, lhs, rhs, { silent = true })
+end
+
+silent_map("v", "<C-C>", '"+y')
+silent_map("n", "<Esc>", ":noh<CR><Esc>") --After searching, pressing escape stops the highlight
+--silent_map("n", "<Tab>", ":bnext<CR>")
+--silent_map("n", "<S-Tab>", ":bprevious<CR>")
 
 map("n", "<Leader>w", [[:%s/\s\+$//e<CR>]])
 map("n", "<Leader>x", ":bp|bd #<CR>")
-map("n", "<Leader>t", ":tabnew<CR>")
+map("n", "<Leader>t", ":tabnew<CR>:bp|bd #<CR>")
 
 -- Move split
 map("n", "<A-Right>", "<C-W><S-L>")
@@ -52,11 +57,7 @@ map("t", "<C-Space>", [[<C-\><C-n>]])
 map("n", [[<Leader>\]], ":" .. term_command .. "<CR>")
 map("n", [[<Leader>|]], ":v" .. term_command .. "<CR>")
 
--- Move cursor relative to visual line breaks
-local function silent_map(mode, lhs, rhs)
-    map(mode, lhs, rhs, { silent = true })
-end
-
+-- line-break movement
 silent_map("n", "<Up>", "gk")
 silent_map("n", "<Down>", "gj")
 silent_map("n", "<Home>", "g<Home>")
@@ -71,6 +72,18 @@ silent_map("i", "<Up>", "<C-o>gk")
 silent_map("i", "<Down>", "<C-o>gj")
 silent_map("i", "<Home>", "<C-o>g<Home>")
 silent_map("i", "<End>", "<C-o>g<End>")
+
+-- half page movement
+silent_map("n", "<PageDown>", "<C-d>zz")
+silent_map("n", "<PageUp>", "<C-u>zz")
+silent_map("v", "<PageDown>", "<C-d>zz")
+silent_map("v", "<PageUp>", "<C-u>zz")
+silent_map("i", "<PageDown>", "<C-o><C-d><C-o>zz")
+silent_map("i", "<PageUp>", "<C-o><C-u><C-o>zz")
+
+-- dynamic tab
+silent_map("n", "<Tab>", ":lua require('dynamic_tab').tab()<CR>")
+silent_map("n", "<S-Tab>", ":lua require('dynamic_tab').shift_tab()<CR>")
 
 opt.autoindent = true
 opt.autoread = true

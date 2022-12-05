@@ -32,7 +32,7 @@ require("packer").startup(function(use)
     -- SNIPPETS
     use("SirVer/ultisnips")
     use("honza/vim-snippets")
-    use("L3MON4D3/LuaSnip") -- Snippets plugin
+    --use("L3MON4D3/LuaSnip") -- Snippets plugin
 
     -- LSP
     use("p00f/nvim-ts-rainbow")
