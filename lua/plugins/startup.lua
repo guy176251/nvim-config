@@ -41,6 +41,7 @@ require("packer").startup(function(use)
         run = ":TSUpdate",
     })
     use("nvim-treesitter/nvim-treesitter-context")
+    use("nvim-treesitter/playground")
     use("neovim/nvim-lspconfig")
     use("williamboman/nvim-lsp-installer")
     use("nvim-lua/plenary.nvim")
