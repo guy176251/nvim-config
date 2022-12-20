@@ -119,7 +119,8 @@ function M.lualine()
     end
 
     require("lualine").setup({
-        options = { theme = "onedark", icons_enabled = true },
+        --options = { theme = "onedark", icons_enabled = true },
+        options = { theme = "tokyonight", icons_enabled = true },
         sections = {
             lualine_a = { "mode" },
             lualine_b = {
@@ -183,7 +184,7 @@ function M.nvim_treesitter()
         javascript = true,
         cpp = true,
     }
-    local rainbow_disable = vim.tbl_extend("force", highlight_disable, { svelte = true, html = true })
+    local rainbow_disable = vim.tbl_extend("force", highlight_disable, { svelte = true, html = true, query = true })
 
     local too_many_lines = function(bufnr)
         return vim.api.nvim_buf_line_count(bufnr) > 5000
@@ -191,11 +192,13 @@ function M.nvim_treesitter()
 
     require("nvim-treesitter.configs").setup({
         ensure_installed = "all",
+        ignore_install = { "html" },
         highlight = {
             enable = true,
             disable = function(lang, bufnr)
                 return highlight_disable[lang] or too_many_lines(bufnr)
             end,
+            additional_vim_regex_highlighting = { "htmldjango", "html" },
         },
         rainbow = {
             enable = true,
@@ -207,6 +210,9 @@ function M.nvim_treesitter()
             --colors = {}, -- table of hex strings
             --termcolors = {},
         },
+        indent = {
+            enable = false,
+        }
     })
 
     local version = vim.version()
@@ -218,14 +224,14 @@ function M.nvim_treesitter()
     local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
     parser_config.htmldjango = {
         install_info = {
-            url = "~/code/treesitter/tree-sitter-htmldjango", -- local path or git repo
+            url = "/home/guy/code/treesitter/tree-sitter-htmldjango-myown", -- local path or git repo
             files = { "src/parser.c" },
             -- optional entries:
-            branch = "main", -- default branch in case of git repo if different from master
-            generate_requires_npm = false, -- if stand-alone parser without npm dependencies
-            requires_generate_from_grammar = false, -- if folder contains pre-generated src/parser.c
+            --branch = "main", -- default branch in case of git repo if different from master
+            --generate_requires_npm = false, -- if stand-alone parser without npm dependencies
+            requires_generate_from_grammar = true, -- if folder contains pre-generated src/parser.c
         },
-        filetype = "htmldjango", -- if filetype does not match the parser name
+        filetype = "html", -- if filetype does not match the parser name
     }
 end
 
@@ -434,6 +440,11 @@ function M.nvim_cmp()
     })
 
     cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
+end
+
+function M.tokyonight()
+    require("tokyonight").setup()
+    vim.cmd([[colorscheme tokyonight-night]])
 end
 
 return M

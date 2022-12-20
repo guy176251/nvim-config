@@ -11,11 +11,11 @@
 (script_element
   (raw_text) @javascript)
 
-((text) @python (#lua-match? @python "^{%p%s+%l+%s+.-%s+%p}$"))
+((text) @htmldjango (#lua-match? @htmldjango "^{%p%s+%l+.-%s+%p}$"))
 
-((text) @python (#lua-match? @python "^{{%s+.-%s+}}$"))
+((text) @htmldjango (#lua-match? @htmldjango "^{{%s+.-%s+}}$"))
 
 ((attribute
-   (attribute_name) @_hyperscript
-   (quoted_attribute_value (attribute_value) @python))
- (#eq? @_hyperscript "_"))
+   (quoted_attribute_value (attribute_value) @htmldjango))
+ (#lua-match? @htmldjango "^{{%s+.-%s+}}$"))
+

@@ -5,7 +5,8 @@ require("packer").startup(function(use)
     use("phaazon/hop.nvim")
 
     -- VIM THEMING
-    use("navarasu/onedark.nvim")
+    --use("navarasu/onedark.nvim")
+    use("folke/tokyonight.nvim")
 
     -- FILE MANAGEMENT
     use("junegunn/fzf")
