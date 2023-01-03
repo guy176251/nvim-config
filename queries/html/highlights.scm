@@ -91,3 +91,7 @@
    (quoted_attribute_value (attribute_value) @operator))
  (#lua-match? @_alpine "^x[-]%l+$"))
 
+[
+ "endfor"
+ "endif"
+] @keyword

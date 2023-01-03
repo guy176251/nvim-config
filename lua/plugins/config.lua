@@ -180,19 +180,34 @@ function M.nvim_treesitter()
     local highlight_disable = {
         typescript = true,
         tsx = true,
-        --html = true,
         javascript = true,
         cpp = true,
     }
-    local rainbow_disable = vim.tbl_extend("force", highlight_disable, { svelte = true, html = true, query = true })
+    local rainbow_disable = vim.tbl_extend("force", highlight_disable, {
+        svelte = true,
+        html = true,
+        query = true,
+    })
 
     local too_many_lines = function(bufnr)
         return vim.api.nvim_buf_line_count(bufnr) > 5000
     end
 
     require("nvim-treesitter.configs").setup({
-        ensure_installed = "all",
-        ignore_install = { "html" },
+        ensure_installed = {
+            "python",
+            "htmldjango",
+            "lua",
+            "javascript",
+            "typescript",
+            "tsx",
+            "json",
+            "svelte",
+            "zig",
+            "vim",
+            "css",
+            "scheme",
+        },
         highlight = {
             enable = true,
             disable = function(lang, bufnr)
@@ -205,14 +220,12 @@ function M.nvim_treesitter()
             disable = function(lang, bufnr)
                 return rainbow_disable[lang] or too_many_lines(bufnr)
             end,
-            extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-            max_file_lines = nil, -- Do not enable for files with more than n lines, int
-            --colors = {}, -- table of hex strings
-            --termcolors = {},
+            extended_mode = false,
+            max_file_lines = nil,
         },
         indent = {
             enable = false,
-        }
+        },
     })
 
     local version = vim.version()
@@ -227,7 +240,7 @@ function M.nvim_treesitter()
             url = "/home/guy/code/treesitter/tree-sitter-htmldjango-myown", -- local path or git repo
             files = { "src/parser.c" },
             -- optional entries:
-            --branch = "main", -- default branch in case of git repo if different from master
+            branch = "paired-tags", -- default branch in case of git repo if different from master
             --generate_requires_npm = false, -- if stand-alone parser without npm dependencies
             requires_generate_from_grammar = true, -- if folder contains pre-generated src/parser.c
         },

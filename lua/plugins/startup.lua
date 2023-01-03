@@ -18,6 +18,7 @@ require("packer").startup(function(use)
     -- SESSION
     use("ThePrimeagen/harpoon")
     use("rmagatti/auto-session")
+    use("mbbill/undotree")
 
     -- GIT
     use("tpope/vim-fugitive")
