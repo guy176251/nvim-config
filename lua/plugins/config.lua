@@ -178,9 +178,9 @@ end
 
 function M.nvim_treesitter()
     local highlight_disable = {
-        typescript = true,
+        --typescript = true,
+        --javascript = true,
         tsx = true,
-        javascript = true,
         cpp = true,
     }
     local rainbow_disable = vim.tbl_extend("force", highlight_disable, {
