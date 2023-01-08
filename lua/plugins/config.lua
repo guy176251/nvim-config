@@ -234,18 +234,22 @@ function M.nvim_treesitter()
         vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
     end
 
-    local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-    parser_config.htmldjango = {
-        install_info = {
-            url = "/home/guy/code/treesitter/tree-sitter-htmldjango-myown", -- local path or git repo
-            files = { "src/parser.c" },
-            -- optional entries:
-            branch = "paired-tags", -- default branch in case of git repo if different from master
-            --generate_requires_npm = false, -- if stand-alone parser without npm dependencies
-            requires_generate_from_grammar = true, -- if folder contains pre-generated src/parser.c
-        },
-        filetype = "html", -- if filetype does not match the parser name
-    }
+    local htmldjango_path = "/home/guy/code/treesitter/tree-sitter-htmldjango-myown"
+
+    if vim.fn.filereadable(htmldjango_path) then
+        local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+        parser_config.htmldjango = {
+            install_info = {
+                url = htmldjango_path, -- local path or git repo
+                files = { "src/parser.c" },
+                -- optional entries:
+                branch = "paired-tags", -- default branch in case of git repo if different from master
+                --generate_requires_npm = false, -- if stand-alone parser without npm dependencies
+                requires_generate_from_grammar = true, -- if folder contains pre-generated src/parser.c
+            },
+            filetype = "html", -- if filetype does not match the parser name
+        }
+    end
 end
 
 function M.nvim_lspconfig()
