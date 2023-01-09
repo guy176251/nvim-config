@@ -196,7 +196,7 @@ function M.nvim_treesitter()
     require("nvim-treesitter.configs").setup({
         ensure_installed = {
             "python",
-            "htmldjango",
+            --"htmldjango",
             "lua",
             "javascript",
             "typescript",
