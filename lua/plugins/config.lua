@@ -464,4 +464,8 @@ function M.tokyonight()
     vim.cmd([[colorscheme tokyonight-night]])
 end
 
+function M.gitsigns()
+    require("gitsigns").setup()
+end
+
 return M

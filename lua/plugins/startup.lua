@@ -23,6 +23,7 @@ require("packer").startup(function(use)
     -- GIT
     use("tpope/vim-fugitive")
     use("stsewd/fzf-checkout.vim")
+    use("lewis6991/gitsigns.nvim")
 
     -- EDITOR
     use("lukas-reineke/indent-blankline.nvim")
