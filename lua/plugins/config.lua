@@ -213,7 +213,7 @@ function M.nvim_treesitter()
             disable = function(lang, bufnr)
                 return highlight_disable[lang] or too_many_lines(bufnr)
             end,
-            additional_vim_regex_highlighting = { "htmldjango", "html" },
+            additional_vim_regex_highlighting = { "htmldjango" },
         },
         rainbow = {
             enable = true,
@@ -236,14 +236,14 @@ function M.nvim_treesitter()
 
     local htmldjango_path = "/home/guy/code/treesitter/tree-sitter-htmldjango-myown"
 
-    if vim.fn.filereadable(htmldjango_path) then
+    if vim.fn.filereadable(htmldjango_path .. "/src/parser.c") then
         local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
         parser_config.htmldjango = {
             install_info = {
                 url = htmldjango_path, -- local path or git repo
                 files = { "src/parser.c" },
                 -- optional entries:
-                branch = "paired-tags", -- default branch in case of git repo if different from master
+                --branch = "paired-tags", -- default branch in case of git repo if different from master
                 --generate_requires_npm = false, -- if stand-alone parser without npm dependencies
                 requires_generate_from_grammar = true, -- if folder contains pre-generated src/parser.c
             },
@@ -378,11 +378,14 @@ function M.null_ls()
     -- ORDER IN TABLE DETERMINES EXECUTION ORDER
     local sources = {
         -- python
-        null_ls.builtins.diagnostics.flake8,
+        --null_ls.builtins.diagnostics.flake8,
         null_ls.builtins.diagnostics.mypy,
+        null_ls.builtins.diagnostics.ruff,
         null_ls.builtins.formatting.black,
-        null_ls.builtins.formatting.isort,
+        null_ls.builtins.formatting.ruff,
+        --null_ls.builtins.formatting.isort,
         --null_ls.builtins.diagnostics.djlint,
+
         -- js
         null_ls.builtins.diagnostics.eslint,
         null_ls.builtins.code_actions.eslint,

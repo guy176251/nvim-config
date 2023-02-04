@@ -39,8 +39,4 @@
  "and"
  "is"
  "as"
- "endfor"
- "endif"
- "else"
- "empty"
 ] @keyword
