@@ -40,3 +40,5 @@
  "is"
  "as"
 ] @keyword
+
+(content) @html
