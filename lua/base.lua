@@ -9,7 +9,7 @@ g.mapleader = ","
 
 -- Move cursor relative to visual line breaks
 local function silent_map(mode, lhs, rhs)
-    map(mode, lhs, rhs, { silent = true })
+	map(mode, lhs, rhs, { silent = true })
 end
 
 silent_map("v", "<C-C>", '"+y')
@@ -74,12 +74,20 @@ silent_map("i", "<Home>", "<C-o>g<Home>")
 silent_map("i", "<End>", "<C-o>g<End>")
 
 -- half page movement
-silent_map("n", "<PageDown>", "M<C-d>")
-silent_map("n", "<PageUp>", "M<C-u>")
-silent_map("v", "<PageDown>", "M<C-d>")
-silent_map("v", "<PageUp>", "M<C-u>")
-silent_map("i", "<PageDown>", "<C-o>M<C-o><C-d>")
-silent_map("i", "<PageUp>", "<C-o>M<C-o><C-u>")
+--silent_map("n", "<PageDown>", "M<C-d>")
+--silent_map("n", "<PageUp>", "M<C-u>")
+--silent_map("v", "<PageDown>", "M<C-d>")
+--silent_map("v", "<PageUp>", "M<C-u>")
+--silent_map("i", "<PageDown>", "<C-o>M<C-o><C-d>")
+--silent_map("i", "<PageUp>", "<C-o>M<C-o><C-u>")
+
+-- half page movement, primeagen version
+silent_map("n", "<PageDown>", "<C-d>zz")
+silent_map("n", "<PageUp>", "<C-u>zz")
+silent_map("v", "<PageDown>", "<C-d>zz")
+silent_map("v", "<PageUp>", "<C-u>zz")
+silent_map("i", "<PageDown>", "<C-o><C-d><C-o>zz")
+silent_map("i", "<PageUp>", "<C-o><C-u><C-o>zz")
 
 -- dynamic tab
 silent_map("n", "<Tab>", ":lua require('dynamic_tab').tab()<CR>")

@@ -21,14 +21,6 @@ function M.hop()
 	map("v", "w", hopword, { silent = true })
 end
 
-function M.onedark()
-	require("onedark").setup({
-		style = "darker",
-		toggle_style_key = "<nop>",
-	})
-	require("onedark").load()
-end
-
 function M.fzf()
 	map("n", "<Leader>o", ":Files<CR>")
 	map("n", "<Leader>O", ":Files ~/<CR>")
@@ -154,6 +146,9 @@ function M.lualine()
 			lualine_a = {
 				{
 					"tabs",
+					cond = function()
+						return require("dynamic_tab").tab_mode()
+					end,
 					max_length = function()
 						return columns(1)
 					end,
@@ -161,10 +156,10 @@ function M.lualine()
 			},
 			lualine_b = {
 				buffer_window("windows", function()
-					return require("dynamic_tab").window_mode()
+					return require("dynamic_tab").tab_mode()
 				end),
 				buffer_window("buffers", function()
-					return not require("dynamic_tab").window_mode()
+					return not require("dynamic_tab").tab_mode()
 				end),
 			},
 			lualine_c = {},
@@ -178,14 +173,14 @@ end
 
 function M.nvim_treesitter()
 	local highlight_disable = {
-		--typescript = true,
-		--javascript = true,
 		tsx = true,
 		cpp = true,
 	}
 	local rainbow_disable = vim.tbl_extend("force", highlight_disable, {
-		svelte = true,
 		html = true,
+		javascript = true,
+		typescript = true,
+		svelte = true,
 		query = true,
 	})
 
@@ -196,14 +191,12 @@ function M.nvim_treesitter()
 	require("nvim-treesitter.configs").setup({
 		ensure_installed = {
 			"python",
-			--"htmldjango",
 			"lua",
 			"javascript",
 			"typescript",
 			"tsx",
 			"json",
 			"svelte",
-			"zig",
 			"vim",
 			"css",
 			"scheme",
@@ -213,7 +206,7 @@ function M.nvim_treesitter()
 			disable = function(lang, bufnr)
 				return highlight_disable[lang] or too_many_lines(bufnr)
 			end,
-			--additional_vim_regex_highlighting = { "htmldjango", "html" },
+			additional_vim_regex_highlighting = { "htmldjango", "html" },
 		},
 		rainbow = {
 			enable = true,
@@ -423,7 +416,7 @@ function M.null_ls()
 end
 
 function M.nvim_autopairs()
-	require("nvim-autopairs").setup({ check_ts = false, enable_moveright = false })
+	require("nvim-autopairs").setup({ check_ts = true, enable_moveright = false })
 end
 
 function M.nvim_cmp()
@@ -485,8 +478,7 @@ function M.lsp_zero()
 	--
 	-- https://github.com/VonHeikemen/lsp-zero.nvim
 	--
-	-- Learn the keybindings, see :help lsp-zero-keybindings
-	-- Learn to configure LSP servers, see :help lsp-zero-api-showcase
+
 	local lsp = require("lsp-zero")
 	lsp.preset("recommended")
 
@@ -494,6 +486,10 @@ function M.lsp_zero()
 	lsp.nvim_workspace()
 
 	lsp.setup()
+end
+
+function M.undotree()
+	nmap("<Leader>u", ":UndotreeToggle<CR>")
 end
 
 return M

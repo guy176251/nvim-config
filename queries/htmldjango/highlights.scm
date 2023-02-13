@@ -41,4 +41,4 @@
  "as"
 ] @keyword
 
-(content) @html
+;(content) @html
