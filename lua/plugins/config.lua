@@ -229,31 +229,31 @@ function M.nvim_treesitter()
 
 	local htmldjango_path = "/home/guy/code/treesitter/tree-sitter-htmldjango-myown"
 
-	if vim.fn.filereadable(htmldjango_path .. "/src/parser.c") then
-		-- old
-		--local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-		--parser_config.htmldjango = {
-		--	install_info = {
-		--		url = htmldjango_path,
-		--		files = { "src/parser.c" },
-		--		requires_generate_from_grammar = true,
-		--	},
-		--	filetype = "html",
-		--}
-		--local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
-		--ft_to_parser.html = "htmldjango"
+	--if vim.fn.filereadable(htmldjango_path .. "/src/parser.c") then
+	--	-- old
+	--	--local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+	--	--parser_config.htmldjango = {
+	--	--	install_info = {
+	--	--		url = htmldjango_path,
+	--	--		files = { "src/parser.c" },
+	--	--		requires_generate_from_grammar = true,
+	--	--	},
+	--	--	filetype = "html",
+	--	--}
+	--	--local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
+	--	--ft_to_parser.html = "htmldjango"
 
-		-- new
-		vim.treesitter.language.add("htmldjango", {
-			install_info = {
-				url = htmldjango_path,
-				files = { "src/parser.c" },
-				requires_generate_from_grammar = true,
-			},
-			filetype = "html",
-		})
-		vim.treesitter.language.register("htmldjango", "html")
-	end
+	--	-- new
+	--	vim.treesitter.language.add("htmldjango", {
+	--		install_info = {
+	--			url = htmldjango_path,
+	--			files = { "src/parser.c" },
+	--			requires_generate_from_grammar = true,
+	--		},
+	--		filetype = "html",
+	--	})
+	--	vim.treesitter.language.register("htmldjango", "html")
+	--end
 end
 
 function M.nvim_lspconfig()
