@@ -230,18 +230,29 @@ function M.nvim_treesitter()
 	local htmldjango_path = "/home/guy/code/treesitter/tree-sitter-htmldjango-myown"
 
 	if vim.fn.filereadable(htmldjango_path .. "/src/parser.c") then
-		local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-		parser_config.htmldjango = {
+		-- old
+		--local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+		--parser_config.htmldjango = {
+		--	install_info = {
+		--		url = htmldjango_path,
+		--		files = { "src/parser.c" },
+		--		requires_generate_from_grammar = true,
+		--	},
+		--	filetype = "html",
+		--}
+		--local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
+		--ft_to_parser.html = "htmldjango"
+
+		-- new
+		vim.treesitter.language.add("htmldjango", {
 			install_info = {
 				url = htmldjango_path,
 				files = { "src/parser.c" },
 				requires_generate_from_grammar = true,
 			},
 			filetype = "html",
-		}
-
-		local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
-		ft_to_parser.html = "htmldjango"
+		})
+		vim.treesitter.language.register("htmldjango", "html")
 	end
 end
 
@@ -380,7 +391,6 @@ function M.null_ls()
 	-- ORDER IN TABLE DETERMINES EXECUTION ORDER
 	local sources = {
 		-- python
-		null_ls.builtins.diagnostics.mypy,
 		null_ls.builtins.diagnostics.ruff,
 		null_ls.builtins.formatting.black,
 		null_ls.builtins.formatting.ruff.with({
@@ -389,6 +399,7 @@ function M.null_ls()
 		--null_ls.builtins.formatting.isort,
 		--null_ls.builtins.diagnostics.flake8,
 		--null_ls.builtins.diagnostics.djlint,
+		--null_ls.builtins.diagnostics.mypy,
 
 		-- js
 		null_ls.builtins.diagnostics.eslint,
@@ -481,6 +492,10 @@ function M.lsp_zero()
 
 	local lsp = require("lsp-zero")
 	lsp.preset("recommended")
+
+	lsp.configure("pyright", {
+		root_dir = lsp_config_defaults().root_dir,
+	})
 
 	-- (Optional) Configure lua language server for neovim
 	lsp.nvim_workspace()

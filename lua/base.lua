@@ -58,20 +58,20 @@ map("n", [[<Leader>\]], ":" .. term_command .. "<CR>")
 map("n", [[<Leader>|]], ":v" .. term_command .. "<CR>")
 
 -- line-break movement
-silent_map("n", "<Up>", "gk")
-silent_map("n", "<Down>", "gj")
-silent_map("n", "<Home>", "g<Home>")
-silent_map("n", "<End>", "g<End>")
-
-silent_map("v", "<Up>", "gk")
-silent_map("v", "<Down>", "gj")
-silent_map("v", "<Home>", "g<Home>")
-silent_map("v", "<End>", "g<End>")
-
-silent_map("i", "<Up>", "<C-o>gk")
-silent_map("i", "<Down>", "<C-o>gj")
-silent_map("i", "<Home>", "<C-o>g<Home>")
-silent_map("i", "<End>", "<C-o>g<End>")
+--silent_map("n", "<Up>", "gk")
+--silent_map("n", "<Down>", "gj")
+--silent_map("n", "<Home>", "g<Home>")
+--silent_map("n", "<End>", "g<End>")
+--
+--silent_map("v", "<Up>", "gk")
+--silent_map("v", "<Down>", "gj")
+--silent_map("v", "<Home>", "g<Home>")
+--silent_map("v", "<End>", "g<End>")
+--
+--silent_map("i", "<Up>", "<C-o>gk")
+--silent_map("i", "<Down>", "<C-o>gj")
+--silent_map("i", "<Home>", "<C-o>g<Home>")
+--silent_map("i", "<End>", "<C-o>g<End>")
 
 -- half page movement
 --silent_map("n", "<PageDown>", "M<C-d>")
