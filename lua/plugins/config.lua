@@ -34,7 +34,11 @@ function M.fzf()
 	map("n", "<Leader>gl", ":GFiles<CR>")
 	map("n", "<Leader>gs", ":GFiles?<CR>")
 	map("n", "<Leader>gc", ":Commits<CR>")
-	map("n", "<Leader>l", ":lua require('fzf_funcs').cwd()<CR>")
+	--map("n", "<Leader>l", ":lua require('fzf_funcs').cwd()<CR>")
+	--map("n", "<Leader>f", ":lua require('fzf_funcs').cwd()<CR>")
+
+	local fzf = require("fzf_funcs")
+	map("n", "<Leader>l", fzf.cwd)
 end
 
 function M.fzf_checkout()
@@ -63,11 +67,14 @@ function M.harpoon()
 	})
 	nmap("<Leader>a", ":lua require('harpoon.mark').add_file()<CR>")
 	nmap("<Leader>m", ":lua require('harpoon.ui').toggle_quick_menu()<CR>")
+
+	for i = 1, 4, 1 do
+		nmap("<C-" .. i .. ">", ':lua require("harpoon.ui").nav_file(' .. i .. ")<CR>")
+	end
 end
 
 function M.auto_session()
 	require("auto-session").setup({
-		log_level = "info",
 		auto_session_suppress_dirs = { "~/", "~/Projects" },
 		auto_session_use_git_branch = true,
 	})
@@ -180,7 +187,7 @@ function M.nvim_treesitter()
 		html = true,
 		javascript = true,
 		typescript = true,
-		svelte = true,
+		--svelte = true,
 		query = true,
 	})
 
@@ -206,7 +213,7 @@ function M.nvim_treesitter()
 			disable = function(lang, bufnr)
 				return highlight_disable[lang] or too_many_lines(bufnr)
 			end,
-			additional_vim_regex_highlighting = { "htmldjango", "html" },
+			--additional_vim_regex_highlighting = { "htmldjango", "html" },
 		},
 		rainbow = {
 			enable = true,
@@ -482,7 +489,64 @@ function M.tokyonight()
 end
 
 function M.gitsigns()
-	require("gitsigns").setup()
+	require("gitsigns").setup({
+		on_attach = function(bufnr)
+			local gs = package.loaded.gitsigns
+
+			local function gs_map(mode, l, r, opts)
+				opts = opts or {}
+				opts.buffer = bufnr
+				vim.keymap.set(mode, l, r, opts)
+			end
+
+			-- Navigation
+			gs_map("n", "]c", function()
+				if vim.wo.diff then
+					return "]c"
+				end
+				vim.schedule(function()
+					gs.next_hunk()
+				end)
+				return "<Ignore>"
+			end, { expr = true })
+
+			gs_map("n", "[c", function()
+				if vim.wo.diff then
+					return "[c"
+				end
+				vim.schedule(function()
+					gs.prev_hunk()
+				end)
+				return "<Ignore>"
+			end, { expr = true })
+
+			-- Actions
+			gs_map("n", "<leader>hs", gs.stage_hunk)
+			gs_map("n", "<leader>hr", gs.reset_hunk)
+			gs_map("v", "<leader>hs", function()
+				gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+			end)
+			gs_map("v", "<leader>hr", function()
+				gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+			end)
+			gs_map("n", "<leader>hS", gs.stage_buffer)
+			gs_map("n", "<leader>hu", gs.undo_stage_hunk)
+			gs_map("n", "<leader>hR", gs.reset_buffer)
+			gs_map("n", "<leader>hp", gs.preview_hunk)
+			gs_map("n", "<leader>hb", function()
+				gs.blame_line({ full = true })
+			end)
+			gs_map("n", "<leader>tb", gs.toggle_current_line_blame)
+			gs_map("n", "<leader>hd", gs.diffthis)
+			gs_map("n", "<leader>hD", function()
+				gs.diffthis("~")
+			end)
+			gs_map("n", "<leader>td", gs.toggle_deleted)
+
+			-- Text object
+			gs_map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
+		end,
+	})
 end
 
 function M.lsp_zero()
