@@ -50,8 +50,12 @@ function M.rnvimr()
 end
 
 function M.nvim_fzf()
+	local bat_command = "bat --color=always --style=header,grid --line-range :300 {}"
+	local default_command = "strings {+}"
+	local preview = '[[ -n "$(command -v bat)" ]] && ' .. bat_command .. " || " .. default_command
+
 	require("fzf").default_options = {
-		fzf_cli_args = " --height 100% --preview='[[ -n \"$(command -v bat)\" ]] && bat --color=always --style=header,grid --line-range :300 {} || strings {+}' ",
+		fzf_cli_args = " --height 100% --preview='" .. preview .. "' ",
 	}
 end
 
