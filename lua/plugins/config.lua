@@ -184,7 +184,7 @@ end
 
 function M.nvim_treesitter()
 	local highlight_disable = {
-		tsx = true,
+		--tsx = true,
 		cpp = true,
 	}
 	local rainbow_disable = vim.tbl_extend("force", highlight_disable, {
@@ -408,6 +408,10 @@ function M.null_ls()
 	local null_ls = require("null-ls")
 	local config = lsp_config_defaults()
 
+    local sqlfluff_args = {
+        extra_args = { "--dialect", "postgres" },
+    }
+
 	-- ORDER IN TABLE DETERMINES EXECUTION ORDER
 	local sources = {
 		-- python
@@ -438,6 +442,16 @@ function M.null_ls()
 
 		-- cpp
 		null_ls.builtins.formatting.clang_format,
+
+		-- golang
+		null_ls.builtins.diagnostics.golangci_lint,
+		null_ls.builtins.formatting.gofmt,
+
+		-- sql
+		-- null_ls.builtins.diagnostics.sqlfluff.with(sqlfluff_args),
+		-- null_ls.builtins.formatting.sqlfluff.with(sqlfluff_args),
+        -- null_ls.builtins.formatting.sqlfmt,
+        null_ls.builtins.formatting.sql_formatter,
 	}
 	null_ls.setup({
 		sources = sources,
