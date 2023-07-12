@@ -408,9 +408,9 @@ function M.null_ls()
 	local null_ls = require("null-ls")
 	local config = lsp_config_defaults()
 
-    local sqlfluff_args = {
-        extra_args = { "--dialect", "postgres" },
-    }
+	local sqlfluff_args = {
+		extra_args = { "--dialect", "postgres" },
+	}
 
 	-- ORDER IN TABLE DETERMINES EXECUTION ORDER
 	local sources = {
@@ -430,6 +430,7 @@ function M.null_ls()
 		null_ls.builtins.code_actions.eslint,
 		null_ls.builtins.formatting.prettier.with({
 			extra_filetypes = { "svelte" },
+			extra_args = { "--tab-width", "4" },
 		}),
 
 		-- lua
@@ -450,8 +451,8 @@ function M.null_ls()
 		-- sql
 		-- null_ls.builtins.diagnostics.sqlfluff.with(sqlfluff_args),
 		-- null_ls.builtins.formatting.sqlfluff.with(sqlfluff_args),
-        -- null_ls.builtins.formatting.sqlfmt,
-        null_ls.builtins.formatting.sql_formatter,
+		-- null_ls.builtins.formatting.sqlfmt,
+		null_ls.builtins.formatting.sql_formatter,
 	}
 	null_ls.setup({
 		sources = sources,
