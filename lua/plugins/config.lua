@@ -234,9 +234,9 @@ function M.nvim_treesitter()
 			enable = true,
 			keymaps = {
 				init_selection = "<CR>",
-				scope_incremental = "<CR>",
-				node_incremental = "<TAB>",
-				node_decremental = "<S-TAB>",
+				scope_incremental = false,
+				node_incremental = "<CR>",
+				node_decremental = "<S-CR>",
 			},
 		},
 	})
@@ -247,8 +247,7 @@ function M.nvim_treesitter()
 		vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 	end
 
-	local htmldjango_path = "/home/guy/code/treesitter/tree-sitter-htmldjango-myown"
-
+	--local htmldjango_path = "/home/guy/code/treesitter/tree-sitter-htmldjango-myown"
 	--if vim.fn.filereadable(htmldjango_path .. "/src/parser.c") then
 	--	-- old
 	--	--local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
@@ -274,134 +273,6 @@ function M.nvim_treesitter()
 	--	})
 	--	vim.treesitter.language.register("htmldjango", "html")
 	--end
-end
-
-function M.nvim_lspconfig()
-	vim.diagnostic.config({
-		virtual_text = true,
-		signs = true,
-		update_in_insert = false,
-	})
-	local lspconfig = require("lspconfig")
-
-	lspconfig.tailwindcss.setup({
-		init_options = {
-			userLanguages = {
-				htmldjango = "html",
-			},
-		},
-	})
-end
-
-function M.nvim_lsp_installer()
-	local config = lsp_config_defaults()
-	local on_attach_tsserver = function(client, bufnr)
-		local ts_utils = require("nvim-lsp-ts-utils")
-		ts_utils.setup({
-			eslint_bin = "eslint_d",
-			eslint_enable_diagnostics = true,
-			eslint_enable_code_actions = true,
-			enable_import_on_completion = true,
-			filter_out_diagnostics_by_severity = {
-				"information",
-				"hint",
-				--"warning",
-				--"error",
-			},
-		})
-		ts_utils.setup_client(client)
-
-		-- no default maps, so you may want to define some here
-		local o = { silent = true }
-		vim.api.nvim_buf_set_keymap(bufnr, "n", "gs", ":TSLspOrganize<CR>", o)
-		vim.api.nvim_buf_set_keymap(bufnr, "n", "rN", ":TSLspRenameFile<CR>", o)
-		vim.api.nvim_buf_set_keymap(bufnr, "n", "gI", ":TSLspImportAll<CR>", o)
-	end
-
-	require("nvim-lsp-installer").on_server_ready(function(server)
-		--Enable (broadcasting) snippet capability for completion
-		local capabilities = vim.lsp.protocol.make_client_capabilities()
-		capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-		local disable_diag = {
-			["textDocument/publishDiagnostics"] = function() end,
-		}
-
-		local on_attach_generic = function(client, bufnr)
-			-- Disables document formatting by lsp
-			client.server_capabilities.document_formatting = false
-			client.server_capabilities.document_range_formatting = false
-
-			config.on_attach(client, bufnr)
-		end
-
-		local opts = {
-			on_attach = on_attach_generic,
-			capabilities = capabilities,
-			flags = {
-				debounce_text_changes = 150,
-			},
-			settings = {
-				format = { enable = true },
-			},
-			root_dir = config.root_dir,
-		}
-
-		if server.name == "tsserver" then
-			opts.on_attach = function(...)
-				on_attach_tsserver(...)
-				on_attach_generic(...)
-			end
-		elseif server.name == "sumneko_lua" then
-			opts.settings.Lua = {
-				diagnostics = {
-					globals = {
-						"vim",
-						"awesome",
-						"client",
-					},
-				},
-			}
-		elseif server.name == "html" then
-			opts.filetypes = { "html", "htmldjango" }
-		elseif server.name == "tailwindcss" then
-			opts.init_options = {
-				userLanguages = {
-					htmldjango = "html",
-				},
-			}
-		elseif server.name == "ccls" then
-			opts.capabilities.offsetEncoding = { "utf-32" }
-		end
-
-		server:setup(opts)
-		vim.cmd([[do User LspAttachBuffers]])
-	end)
-
-	local lsp_installer_servers = require("nvim-lsp-installer.servers")
-	local auto_servers = {
-		"sumneko_lua",
-		"tsserver",
-		"bashls",
-		"vimls",
-		"rust_analyzer",
-		"html",
-		"cssls",
-		"jsonls",
-		"jedi_language_server",
-		--"pylsp",
-		"svelte",
-		"tailwindcss",
-		"zls",
-		"emmet_ls",
-	}
-
-	for _, s in ipairs(auto_servers) do
-		local ok, server = lsp_installer_servers.get_server(s)
-		if ok and not server:is_installed() then
-			server:install()
-		end
-	end
 end
 
 function M.null_ls()
@@ -463,52 +334,6 @@ end
 
 function M.nvim_autopairs()
 	require("nvim-autopairs").setup({ check_ts = true, enable_moveright = false })
-end
-
-function M.nvim_cmp()
-	vim.opt.completeopt = "menuone,noselect"
-
-	local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-	local cmp = require("cmp")
-
-	-- CMP NVIM ULTISNIP
-	local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
-	local ultisnip = {
-		expand = function(args)
-			vim.fn["UltiSnips#Anon"](args.body)
-		end,
-		tab = cmp.mapping(function(fallback)
-			cmp_ultisnips_mappings.compose({ "select_next_item" })(fallback)
-		end, { "i", "s" }),
-		shift_tab = cmp.mapping(function(fallback)
-			cmp_ultisnips_mappings.compose({ "select_prev_item" })(fallback)
-		end, { "i", "s" }),
-	}
-
-	cmp.setup({
-		snippet = {
-			expand = ultisnip.expand,
-		},
-		mapping = {
-			["<C-p>"] = cmp.mapping.select_prev_item(),
-			["<C-n>"] = cmp.mapping.select_next_item(),
-			["<C-d>"] = cmp.mapping.scroll_docs(-4),
-			["<C-f>"] = cmp.mapping.scroll_docs(4),
-			["<C-Space>"] = cmp.mapping.complete(),
-			["<C-e>"] = cmp.mapping.close(),
-			["<CR>"] = cmp.mapping.confirm({
-				select = true,
-			}),
-			["<Tab>"] = ultisnip.tab,
-			["<S-Tab>"] = ultisnip.shift_tab,
-		},
-		sources = {
-			{ name = "nvim_lsp" },
-			{ name = "ultisnips" },
-		},
-	})
-
-	cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
 end
 
 function M.tokyonight()
