@@ -418,7 +418,7 @@ function M.lsp_zero()
 		"pyright",
 		"lua_ls",
 		"bashls",
-		"gopls",
+		--"gopls",
 
 		-- js web shit
 		"html",
