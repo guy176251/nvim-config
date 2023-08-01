@@ -184,16 +184,15 @@ end
 
 function M.nvim_treesitter()
 	local highlight_disable = {
-		--tsx = true,
 		cpp = true,
+		--javascript = true,
 	}
-	local rainbow_disable = vim.tbl_extend("force", highlight_disable, {
-		html = true,
-		javascript = true,
-		typescript = true,
-		--svelte = true,
-		query = true,
-	})
+	--local rainbow_disable = vim.tbl_extend("force", highlight_disable, {
+	--	html = true,
+	--	typescript = true,
+	--	tsx = true,
+	--	svelte = true,
+	--})
 
 	local too_many_lines = function(bufnr)
 		return vim.api.nvim_buf_line_count(bufnr) > 5000
@@ -210,7 +209,8 @@ function M.nvim_treesitter()
 			"svelte",
 			"vim",
 			"css",
-			"scheme",
+			"html",
+			"query",
 		},
 		highlight = {
 			enable = true,
@@ -219,14 +219,14 @@ function M.nvim_treesitter()
 			end,
 			--additional_vim_regex_highlighting = { "htmldjango", "html" },
 		},
-		rainbow = {
-			enable = true,
-			disable = function(lang, bufnr)
-				return rainbow_disable[lang] or too_many_lines(bufnr)
-			end,
-			extended_mode = false,
-			max_file_lines = nil,
-		},
+		--rainbow = {
+		--	enable = true,
+		--	disable = function(lang, bufnr)
+		--		return rainbow_disable[lang] or too_many_lines(bufnr)
+		--	end,
+		--	extended_mode = false,
+		--	max_file_lines = nil,
+		--},
 		indent = {
 			enable = true,
 		},
@@ -324,6 +324,10 @@ function M.null_ls()
 		-- null_ls.builtins.formatting.sqlfluff.with(sqlfluff_args),
 		-- null_ls.builtins.formatting.sqlfmt,
 		null_ls.builtins.formatting.sql_formatter,
+
+		-- elixir
+		null_ls.builtins.diagnostics.credo,
+		null_ls.builtins.formatting.mix,
 	}
 	null_ls.setup({
 		sources = sources,
@@ -409,6 +413,21 @@ function M.lsp_zero()
 
 	local lsp = require("lsp-zero")
 	lsp.preset("recommended")
+
+	lsp.ensure_installed({
+		"pyright",
+		"lua_ls",
+		"bashls",
+		"gopls",
+
+		-- js web shit
+		"html",
+		"cssls",
+		"tsserver",
+		"svelte",
+		"angularls",
+		"tailwindcss",
+	})
 
 	lsp.configure("pyright", {
 		root_dir = lsp_config_defaults().root_dir,
