@@ -185,14 +185,7 @@ end
 function M.nvim_treesitter()
 	local highlight_disable = {
 		cpp = true,
-		--javascript = true,
 	}
-	--local rainbow_disable = vim.tbl_extend("force", highlight_disable, {
-	--	html = true,
-	--	typescript = true,
-	--	tsx = true,
-	--	svelte = true,
-	--})
 
 	local too_many_lines = function(bufnr)
 		return vim.api.nvim_buf_line_count(bufnr) > 5000
@@ -211,22 +204,14 @@ function M.nvim_treesitter()
 			"css",
 			"html",
 			"query",
+			"bash",
 		},
 		highlight = {
 			enable = true,
 			disable = function(lang, bufnr)
 				return highlight_disable[lang] or too_many_lines(bufnr)
 			end,
-			--additional_vim_regex_highlighting = { "htmldjango", "html" },
 		},
-		--rainbow = {
-		--	enable = true,
-		--	disable = function(lang, bufnr)
-		--		return rainbow_disable[lang] or too_many_lines(bufnr)
-		--	end,
-		--	extended_mode = false,
-		--	max_file_lines = nil,
-		--},
 		indent = {
 			enable = true,
 		},
@@ -241,37 +226,20 @@ function M.nvim_treesitter()
 		},
 	})
 
-	local version = vim.version()
-	if version.api_level ~= 9 then
+	if vim.version().api_level ~= 9 then
 		vim.opt.foldmethod = "expr"
 		vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 	end
 
-	--local htmldjango_path = "/home/guy/code/treesitter/tree-sitter-htmldjango-myown"
-	--if vim.fn.filereadable(htmldjango_path .. "/src/parser.c") then
-	--	-- old
-	--	--local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-	--	--parser_config.htmldjango = {
-	--	--	install_info = {
-	--	--		url = htmldjango_path,
-	--	--		files = { "src/parser.c" },
-	--	--		requires_generate_from_grammar = true,
-	--	--	},
-	--	--	filetype = "html",
-	--	--}
-	--	--local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
-	--	--ft_to_parser.html = "htmldjango"
+	-- potentially load .so from this repo
+	--print(debug.getinfo(2, "S").source:sub(2))
+	--vim.fn.getchar()
 
-	--	-- new
+	--local shared_lib = "/home/guy/code/treesitter/tree-sitter-htmldjango-myown/src/parser.so"
+	--if vim.fn.filereadable(shared_lib) == 1 then
 	--	vim.treesitter.language.add("htmldjango", {
-	--		install_info = {
-	--			url = htmldjango_path,
-	--			files = { "src/parser.c" },
-	--			requires_generate_from_grammar = true,
-	--		},
-	--		filetype = "html",
+	--		path = shared_lib,
 	--	})
-	--	vim.treesitter.language.register("htmldjango", "html")
 	--end
 end
 
@@ -328,6 +296,12 @@ function M.null_ls()
 		-- elixir
 		null_ls.builtins.diagnostics.credo,
 		null_ls.builtins.formatting.mix,
+
+		-- zig
+		null_ls.builtins.formatting.zigfmt,
+
+		-- c_sharp
+		null_ls.builtins.formatting.csharpier,
 	}
 	null_ls.setup({
 		sources = sources,
@@ -433,6 +407,18 @@ function M.lsp_zero()
 		root_dir = lsp_config_defaults().root_dir,
 	})
 
+	lsp.configure("tsserver", {
+		settings = {
+			implicitProjectConfiguration = {
+				checkJs = true,
+			},
+		},
+	})
+
+	lsp.configure("html", {
+		filetypes = { "html", "htmldjango" },
+	})
+
 	-- (Optional) Configure lua language server for neovim
 	lsp.nvim_workspace()
 
@@ -441,6 +427,10 @@ end
 
 function M.undotree()
 	nmap("<Leader>u", ":UndotreeToggle<CR>")
+end
+
+function M.luasnip()
+	require("luasnip").filetype_extend("htmldjango", { "html" })
 end
 
 return M

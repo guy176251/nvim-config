@@ -1,7 +1,15 @@
 -- SHOULD NOT CONTAIN ANY SETTINGS RELATED TO EXTERNAL PLUGINS
 -- OR CUSTOM CODE YOU YOURSELF WROTE.
 
-local map = require("helpers").map
+local function map(mode, lhs, rhs, opts)
+    local default_opts = { noremap = true }
+    if opts then
+        default_opts = vim.tbl_extend("force", default_opts, opts)
+    end
+    --vim.api.nvim_set_keymap(mode, lhs, rhs, default_opts)
+    vim.keymap.set(mode, lhs, rhs, default_opts)
+end
+
 local opt = vim.opt
 local g = vim.g
 
@@ -95,8 +103,6 @@ silent_map("n", "<S-Tab>", ":lua require('dynamic_tab').shift_tab()<CR>")
 
 opt.autoindent = true
 opt.autoread = true
-opt.cursorcolumn = true
-opt.cursorline = true
 opt.expandtab = true
 opt.hlsearch = true
 opt.ignorecase = true
@@ -131,10 +137,16 @@ opt.foldlevelstart = 10
 
 opt.mouse = ""
 
-vim.cmd([[hi CursorLine cterm=NONE ctermbg=darkgray ctermfg=white]])
 vim.cmd([[au BufRead,BufNewFile .env.* set filetype=sh]])
 vim.cmd([[au BufRead,BufNewFile Dockerfile.* set filetype=dockerfile]])
-vim.cmd([[au BufRead,BufNewFile *.html set filetype=html]])
+--vim.cmd([[au BufRead,BufNewFile *.html set filetype=html]])
 
 -- redo folds on write
 vim.cmd([[au BufWrite * normal zx]])
+
+-- vscode doesn't like cursorline stuff
+if not vim.g.vscode then
+    vim.cmd([[hi CursorLine cterm=NONE ctermbg=darkgray ctermfg=white]])
+    opt.cursorcolumn = true
+    opt.cursorline = true
+end
