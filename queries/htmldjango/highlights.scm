@@ -47,4 +47,5 @@
  "endif"
  "else"
  "empty"
+ "elif"
 ] @keyword

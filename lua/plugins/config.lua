@@ -247,9 +247,9 @@ function M.null_ls()
 	local null_ls = require("null-ls")
 	local config = lsp_config_defaults()
 
-	local sqlfluff_args = {
-		extra_args = { "--dialect", "postgres" },
-	}
+	--local sqlfluff_args = {
+	--	extra_args = { "--dialect", "postgres" },
+	--}
 
 	-- ORDER IN TABLE DETERMINES EXECUTION ORDER
 	local sources = {
@@ -418,6 +418,17 @@ function M.lsp_zero()
 	lsp.configure("html", {
 		filetypes = { "html", "htmldjango" },
 	})
+
+	lsp.on_attach(function(client, bufnr)
+		if client.name == "svelte" then
+			vim.api.nvim_create_autocmd("BufWritePost", {
+				pattern = { "*.js", "*.ts" },
+				callback = function(ctx)
+					client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
+				end,
+			})
+		end
+	end)
 
 	-- (Optional) Configure lua language server for neovim
 	lsp.nvim_workspace()

@@ -100,4 +100,7 @@ require("packer").startup(function(use)
 
 	-- ZIG
 	use("ziglang/zig.vim")
+
+	-- C#
+	use("jlcrochet/vim-razor")
 end)
