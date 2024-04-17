@@ -55,6 +55,7 @@ require("packer").startup(function(use)
 	use("nvim-treesitter/nvim-treesitter-context")
 	use("nvim-treesitter/playground")
 	use("jose-elias-alvarez/null-ls.nvim")
+	--use("nvimtools/none-ls.nvim")
 	use("windwp/nvim-autopairs")
 
 	--use("neovim/nvim-lspconfig")
