@@ -140,6 +140,7 @@ opt.mouse = ""
 vim.cmd([[au BufRead,BufNewFile .env.* set filetype=sh]])
 vim.cmd([[au BufRead,BufNewFile Dockerfile.* set filetype=dockerfile]])
 --vim.cmd([[au BufRead,BufNewFile *.html set filetype=html]])
+vim.filetype.add({ extension = { templ = "templ" } })
 
 -- redo folds on write
 vim.cmd([[au BufWrite * normal zx]])

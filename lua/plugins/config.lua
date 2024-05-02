@@ -392,7 +392,7 @@ function M.lsp_zero()
 		"pyright",
 		"lua_ls",
 		"bashls",
-		--"gopls",
+		"gopls",
 
 		-- js web shit
 		"html",
@@ -401,6 +401,8 @@ function M.lsp_zero()
 		"svelte",
 		"angularls",
 		"tailwindcss",
+        "templ",
+        "htmx",
 	})
 
 	lsp.configure("pyright", {
@@ -416,7 +418,11 @@ function M.lsp_zero()
 	})
 
 	lsp.configure("html", {
-		filetypes = { "html", "htmldjango" },
+		filetypes = { "html", "htmldjango", "templ" },
+	})
+
+	lsp.configure("htmx", {
+		filetypes = { "html", "htmldjango", "templ" },
 	})
 
 	lsp.on_attach(function(client, bufnr)

@@ -30,7 +30,7 @@
 
 (tag_statement tag_argument:
     (keyword_argument keyword_name:
-        ((identifier) @parameter)))
+        ((identifier) @variable.parameter)))
 
 (filter filter_name:
     ((identifier) @function))

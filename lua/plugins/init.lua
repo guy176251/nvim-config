@@ -1,7 +1,8 @@
-require("plugins.install_packer")
-require("plugins.startup")
-
+local setup = require("plugins.setup")
 local config = require("plugins.config")
+
+setup.install_packer()
+setup.install_plugins()
 
 config.auto_session()
 config.fzf()
