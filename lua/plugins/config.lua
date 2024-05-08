@@ -392,9 +392,6 @@ function M.lsp_zero()
 		"pyright",
 		"lua_ls",
 		"bashls",
-		"gopls",
-
-		-- js web shit
 		"html",
 		"cssls",
 		"tsserver",
@@ -402,7 +399,8 @@ function M.lsp_zero()
 		"angularls",
 		"tailwindcss",
         "templ",
-        "htmx",
+		--"gopls",
+        --"htmx",
 	})
 
 	lsp.configure("pyright", {
