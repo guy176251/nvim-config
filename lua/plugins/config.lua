@@ -398,9 +398,9 @@ function M.lsp_zero()
 		"svelte",
 		"angularls",
 		"tailwindcss",
-        "templ",
+		--"templ",
 		--"gopls",
-        --"htmx",
+		--"htmx",
 	})
 
 	lsp.configure("pyright", {
@@ -423,7 +423,7 @@ function M.lsp_zero()
 		filetypes = { "html", "htmldjango", "templ" },
 	})
 
-	lsp.on_attach(function(client, bufnr)
+	lsp.on_attach(function(client, _)
 		if client.name == "svelte" then
 			vim.api.nvim_create_autocmd("BufWritePost", {
 				pattern = { "*.js", "*.ts" },
