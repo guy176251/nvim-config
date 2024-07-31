@@ -9,6 +9,10 @@ function M.map(mode, lhs, rhs, opts)
     vim.keymap.set(mode, lhs, rhs, default_opts)
 end
 
+function M.nmap(...)
+	M.map("n", ...)
+end
+
 function M.lsp_config_defaults()
     return {
         root_dir = require("lspconfig.util").root_pattern(

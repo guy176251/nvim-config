@@ -103,6 +103,13 @@ function M.install_plugins()
 
 		-- C#
 		use("jlcrochet/vim-razor")
+
+		-- RUST
+		use({
+			"mrcjkb/rustaceanvim",
+			version = "^5", -- Recommended
+			lazy = false, -- This plugin is already lazy
+		})
 	end)
 end
 
