@@ -6,7 +6,9 @@
        (object
          (pair
            (property_identifier) @_key
-           (template_string) @html)))))
+           (template_string) @injection.content
+             (#set! injection.include-children)
+             (#set! injection.language "html"))))))
  (#eq? @_decorator "Component") (#eq? @_key "template"))
 
 ; angular inline styles
@@ -19,7 +21,9 @@
            (property_identifier) @_key
            (array
              (string
-               (string_fragment) @css)))))))
+               (string_fragment) @injection.content
+                 (#set! injection.include-children)
+                 (#set! injection.language "css"))))))))
  (#eq? @_decorator "Component") (#eq? @_key "styles"))
 
 ; angular inline styles "template string"
@@ -31,5 +35,7 @@
          (pair
            (property_identifier) @_key
            (array
-             (template_string) @css))))))
+             (template_string) @injection.content
+               (#set! injection.include-children)
+               (#set! injection.language "css")))))))
  (#eq? @_decorator "Component") (#eq? @_key "styles"))
