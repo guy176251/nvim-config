@@ -133,7 +133,7 @@ opt.tabstop = 4
 opt.textwidth = 0
 
 opt.foldmethod = "indent"
-opt.foldlevelstart = 10
+opt.foldlevelstart = 30
 
 opt.mouse = ""
 
