@@ -450,6 +450,7 @@ end
 
 function M.luasnip()
 	require("luasnip").filetype_extend("htmldjango", { "html" })
+	require("luasnip").filetype_extend("templ", { "html" })
 	require("luasnip.loaders.from_snipmate").load()
 end
 
