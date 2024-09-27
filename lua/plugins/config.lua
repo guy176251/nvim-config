@@ -205,6 +205,7 @@ function M.nvim_treesitter()
 			"html",
 			"query",
 			"bash",
+			"glimmer",
 		},
 		highlight = {
 			enable = true,
@@ -394,20 +395,20 @@ function M.lsp_zero()
 		"bashls",
 		"html",
 		"cssls",
-		"tsserver",
+		"ts_ls",
 		"svelte",
 		"angularls",
 		"tailwindcss",
-		--"templ",
-		--"gopls",
-		--"htmx",
+		"templ",
+		"gopls",
+		"htmx",
 	})
 
 	lsp.configure("pyright", {
 		root_dir = lsp_config_defaults().root_dir,
 	})
 
-	lsp.configure("tsserver", {
+	lsp.configure("ts_ls", {
 		settings = {
 			implicitProjectConfiguration = {
 				checkJs = true,
@@ -415,13 +416,10 @@ function M.lsp_zero()
 		},
 	})
 
-	lsp.configure("html", {
-		filetypes = { "html", "htmldjango", "templ" },
-	})
+	local html_filetypes = { "html", "htmldjango", "templ", "glimmer" }
 
-	lsp.configure("htmx", {
-		filetypes = { "html", "htmldjango", "templ" },
-	})
+	lsp.configure("html", { filetypes = html_filetypes })
+	lsp.configure("htmx", { filetypes = html_filetypes })
 
 	require("mason-lspconfig").setup_handlers({
 		["rust_analyzer"] = function() end,
@@ -449,8 +447,10 @@ function M.undotree()
 end
 
 function M.luasnip()
-	require("luasnip").filetype_extend("htmldjango", { "html" })
-	require("luasnip").filetype_extend("templ", { "html" })
+	local luasnip = require("luasnip")
+	luasnip.filetype_extend("htmldjango", { "html" })
+	luasnip.filetype_extend("templ", { "html" })
+	luasnip.filetype_extend("handlebars", { "html" })
 	require("luasnip.loaders.from_snipmate").load()
 end
 
