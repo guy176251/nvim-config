@@ -451,7 +451,7 @@ function M.luasnip()
 	luasnip.filetype_extend("htmldjango", { "html" })
 	luasnip.filetype_extend("templ", { "html" })
 	luasnip.filetype_extend("handlebars", { "html" })
-	require("luasnip.loaders.from_snipmate").load()
+	require("luasnip.loaders.from_snipmate").lazy_load()
 end
 
 function M.rustaceanvim()

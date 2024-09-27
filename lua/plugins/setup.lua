@@ -86,6 +86,7 @@ function M.install_plugins()
 				-- Snippets
 				{ "L3MON4D3/LuaSnip" }, -- Required
 				{ "rafamadriz/friendly-snippets" }, -- Optional
+				{ "honza/vim-snippets" }, -- Optional
 			},
 		})
 
