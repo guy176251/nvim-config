@@ -398,7 +398,7 @@ function M.lsp_zero()
 		"ts_ls",
 		"svelte",
 		"angularls",
-		"tailwindcss",
+		--"tailwindcss",
 		"templ",
 		"gopls",
 		"htmx",
@@ -416,7 +416,7 @@ function M.lsp_zero()
 		},
 	})
 
-	local html_filetypes = { "html", "htmldjango", "templ", "glimmer" }
+	local html_filetypes = { "html", "htmldjango", "templ", "glimmer", "handlebars" }
 
 	lsp.configure("html", { filetypes = html_filetypes })
 	lsp.configure("htmx", { filetypes = html_filetypes })
