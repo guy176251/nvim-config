@@ -255,15 +255,13 @@ function M.null_ls()
 	-- ORDER IN TABLE DETERMINES EXECUTION ORDER
 	local sources = {
 		-- python
-		null_ls.builtins.diagnostics.ruff,
-		null_ls.builtins.formatting.black,
-		null_ls.builtins.formatting.ruff.with({
-			extra_args = { "--extend-select", "I001", "--unfixable", "F841,F842,F401" },
+		null_ls.builtins.diagnostics.ruff.with({
+			args = { "check", "-n", "-e", "--stdin-filename", "$FILENAME", "-" },
 		}),
-		--null_ls.builtins.formatting.isort,
-		--null_ls.builtins.diagnostics.flake8,
-		--null_ls.builtins.diagnostics.djlint,
-		--null_ls.builtins.diagnostics.mypy,
+		null_ls.builtins.formatting.ruff.with({
+			--extra_args = { "--extend-select", "I001", "--unfixable", "F841,F842,F401" },
+			args = { "format", "--stdin-filename", "$FILENAME", "-" },
+		}),
 
 		-- js
 		null_ls.builtins.diagnostics.eslint,
