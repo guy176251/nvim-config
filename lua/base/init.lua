@@ -2,12 +2,12 @@
 -- OR CUSTOM CODE YOU YOURSELF WROTE.
 
 local function map(mode, lhs, rhs, opts)
-    local default_opts = { noremap = true }
-    if opts then
-        default_opts = vim.tbl_extend("force", default_opts, opts)
-    end
-    --vim.api.nvim_set_keymap(mode, lhs, rhs, default_opts)
-    vim.keymap.set(mode, lhs, rhs, default_opts)
+	local default_opts = { noremap = true }
+	if opts then
+		default_opts = vim.tbl_extend("force", default_opts, opts)
+	end
+	--vim.api.nvim_set_keymap(mode, lhs, rhs, default_opts)
+	vim.keymap.set(mode, lhs, rhs, default_opts)
 end
 
 local opt = vim.opt
@@ -136,6 +136,7 @@ opt.foldmethod = "indent"
 opt.foldlevelstart = 30
 
 opt.mouse = ""
+opt.backupcopy = "yes"
 
 vim.cmd([[au BufRead,BufNewFile .env.* set filetype=sh]])
 vim.cmd([[au BufRead,BufNewFile Dockerfile.* set filetype=dockerfile]])
@@ -147,7 +148,7 @@ vim.cmd([[au BufWrite * normal zx]])
 
 -- vscode doesn't like cursorline stuff
 if not vim.g.vscode then
-    vim.cmd([[hi CursorLine cterm=NONE ctermbg=darkgray ctermfg=white]])
-    opt.cursorcolumn = true
-    opt.cursorline = true
+	vim.cmd([[hi CursorLine cterm=NONE ctermbg=darkgray ctermfg=white]])
+	opt.cursorcolumn = true
+	opt.cursorline = true
 end
