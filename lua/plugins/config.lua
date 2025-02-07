@@ -262,6 +262,9 @@ function M.null_ls()
 			--extra_args = { "--extend-select", "I001", "--unfixable", "F841,F842,F401" },
 			args = { "format", "--stdin-filename", "$FILENAME", "-" },
 		}),
+		null_ls.builtins.formatting.ruff.with({
+			args = { "check", "--select", "I", "--fix", "--stdin-filename", "$FILENAME", "-" },
+		}),
 
 		-- js
 		null_ls.builtins.diagnostics.eslint,
