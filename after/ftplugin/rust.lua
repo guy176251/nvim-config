@@ -1,7 +1,0 @@
---local helpers = require("helpers")
---local nmap = helpers.nmap
---
---nmap("]d", ":RustLsp renderDiagnostic<CR>")
-----nmap("<Space>q", ":RustLsp explainError<CR>")
---nmap("<Space>q", ":RustLsp renderDiagnostic<CR>")
---nmap("<Space>f", ":RustFmt<CR>")

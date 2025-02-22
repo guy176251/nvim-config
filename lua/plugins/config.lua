@@ -1,9 +1,55 @@
-local helpers = require("helpers")
-local map = helpers.map
-local lsp_config_defaults = helpers.lsp_config_defaults
+local function map(mode, lhs, rhs, opts)
+	local default_opts = { noremap = true }
+	if opts then
+		default_opts = vim.tbl_extend("force", default_opts, opts)
+	end
+	vim.keymap.set(mode, lhs, rhs, default_opts)
+end
+
+local function silent_map(mode, lhs, rhs)
+	map(mode, lhs, rhs, { silent = true })
+end
 
 local function nmap(...)
 	map("n", ...)
+end
+
+local function lsp_config_defaults()
+	return {
+		root_dir = require("lspconfig.util").root_pattern("pyproject.toml", "package.json", ".null-ls-root", ".git"),
+
+		on_attach = function(_, bufnr)
+			vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", { buf = bufnr })
+
+			local opts = { noremap = true, silent = true, buffer = bufnr }
+
+			nmap("<C-k>", vim.lsp.buf.signature_help, opts)
+			nmap("<space>D", vim.lsp.buf.type_definition, opts)
+			nmap("<space>ca", vim.lsp.buf.code_action, opts)
+			nmap("<space>e", vim.diagnostic.open_float, opts)
+			nmap("<space>q", vim.diagnostic.setloclist, opts)
+			nmap("<space>rn", vim.lsp.buf.rename, opts)
+			nmap("<space>wa", vim.lsp.buf.add_workspace_folder, opts)
+			nmap("<space>wl", function()
+				print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+			end, opts)
+			nmap("<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
+			nmap("K", vim.lsp.buf.hover, opts)
+			nmap("[d", function()
+				vim.diagnostic.goto_prev({ wrap = true })
+			end, opts)
+			nmap("]d", function()
+				vim.diagnostic.goto_next({ wrap = true })
+			end, opts)
+			nmap("gD", vim.lsp.buf.declaration, opts)
+			nmap("gd", vim.lsp.buf.definition, opts)
+			nmap("gi", vim.lsp.buf.implementation, opts)
+			nmap("gr", vim.lsp.buf.references, opts)
+			nmap("<space>f", function()
+				vim.lsp.buf.format({ async = true })
+			end, opts)
+		end,
+	}
 end
 
 local M = {}
@@ -22,6 +68,11 @@ function M.hop()
 end
 
 function M.fzf()
+	local function cwd()
+		local path = vim.fn.expand("%:p:h")
+		vim.cmd("Files " .. path)
+	end
+
 	map("n", "<Leader>o", ":Files<CR>")
 	map("n", "<Leader>O", ":Files ~/<CR>")
 	map("n", "<Leader>p", ":Buffers<CR>")
@@ -34,11 +85,7 @@ function M.fzf()
 	map("n", "<Leader>gl", ":GFiles<CR>")
 	map("n", "<Leader>gs", ":GFiles?<CR>")
 	map("n", "<Leader>gc", ":Commits<CR>")
-	--map("n", "<Leader>l", ":lua require('fzf_funcs').cwd()<CR>")
-	--map("n", "<Leader>f", ":lua require('fzf_funcs').cwd()<CR>")
-
-	local fzf = require("fzf_funcs")
-	map("n", "<Leader>l", fzf.cwd)
+	map("n", "<Leader>l", cwd)
 end
 
 function M.fzf_checkout()
@@ -82,15 +129,11 @@ function M.auto_session()
 		auto_session_suppress_dirs = { "~/", "~/Projects" },
 		auto_session_use_git_branch = true,
 	})
+
+	vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 end
 
 function M.indent_blankline()
-	--vim.opt.list = true
-	--require("indent_blankline").setup({
-	--	space_char_blankline = " ",
-	--	show_current_context = true,
-	--	show_current_context_start = true,
-	--})
 	require("ibl").setup()
 end
 
@@ -99,6 +142,22 @@ function M.lualine()
 	local function columns(num)
 		return vim.o.columns * num / 6
 	end
+
+	local function tab_mode()
+		return vim.fn.tabpagenr("$") > 1
+	end
+
+	local function tab()
+		vim.cmd(tab_mode() and "tabn" or "bnext")
+	end
+
+	local function shift_tab()
+		vim.cmd(tab_mode() and "tabp" or "bprevious")
+	end
+
+	-- dynamic tab
+	silent_map("n", "<Tab>", tab)
+	silent_map("n", "<S-Tab>", shift_tab)
 
 	-- config options
 	local function buffer_window(type, cond)
@@ -158,7 +217,7 @@ function M.lualine()
 				{
 					"tabs",
 					cond = function()
-						return require("dynamic_tab").tab_mode()
+						return tab_mode()
 					end,
 					max_length = function()
 						return columns(1)
@@ -167,10 +226,10 @@ function M.lualine()
 			},
 			lualine_b = {
 				buffer_window("windows", function()
-					return require("dynamic_tab").tab_mode()
+					return tab_mode()
 				end),
 				buffer_window("buffers", function()
-					return not require("dynamic_tab").tab_mode()
+					return not tab_mode()
 				end),
 			},
 			lualine_c = {},
@@ -458,41 +517,7 @@ end
 function M.rustaceanvim()
 	vim.g.rustaceanvim = {
 		server = {
-			on_attach = function(client, bufnr)
-				local function buf_set_keymap(...)
-					vim.api.nvim_buf_set_keymap(bufnr, ...)
-				end
-
-				local opts = { noremap = true, silent = true }
-
-				buf_set_keymap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-				buf_set_keymap("n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
-				buf_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-				buf_set_keymap("n", "<space>e", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
-				buf_set_keymap("n", "<space>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
-				buf_set_keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-				buf_set_keymap("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
-				buf_set_keymap(
-					"n",
-					"<space>wl",
-					"<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>",
-					opts
-				)
-				buf_set_keymap("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
-				buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-				buf_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev({wrap = true})<CR>", opts)
-				buf_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next({wrap = true})<CR>", opts)
-				buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-				buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-				buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-				buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-
-				if vim.version().api_level == 9 then
-					buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-				else
-					buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>", opts)
-				end
-			end,
+			on_attach = lsp_config_defaults().on_attach,
 		},
 	}
 end

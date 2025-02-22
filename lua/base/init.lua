@@ -6,8 +6,11 @@ local function map(mode, lhs, rhs, opts)
 	if opts then
 		default_opts = vim.tbl_extend("force", default_opts, opts)
 	end
-	--vim.api.nvim_set_keymap(mode, lhs, rhs, default_opts)
 	vim.keymap.set(mode, lhs, rhs, default_opts)
+end
+
+local function silent_map(mode, lhs, rhs)
+	map(mode, lhs, rhs, { silent = true })
 end
 
 local opt = vim.opt
@@ -15,15 +18,8 @@ local g = vim.g
 
 g.mapleader = ","
 
--- Move cursor relative to visual line breaks
-local function silent_map(mode, lhs, rhs)
-	map(mode, lhs, rhs, { silent = true })
-end
-
 silent_map("v", "<C-C>", '"+y')
 silent_map("n", "<Esc>", ":noh<CR><Esc>") --After searching, pressing escape stops the highlight
---silent_map("n", "<Tab>", ":bnext<CR>")
---silent_map("n", "<S-Tab>", ":bprevious<CR>")
 
 map("n", "<Leader>w", [[:%s/\s\+$//e<CR>]])
 map("n", "<Leader>x", ":bp|bd #<CR>")
@@ -58,13 +54,6 @@ map("i", "<S-Down>", "<C-X><C-E>")
 -- Make visual yanks place the cursor back where started
 map("v", "y", "ygv<Esc>")
 
--- Terminal binds
---local term_command = "split | set norelativenumber | set nonumber | term"
-local term_command = "split | term"
-map("t", "<C-Space>", [[<C-\><C-n>]])
-map("n", [[<Leader>\]], ":" .. term_command .. "<CR>")
-map("n", [[<Leader>|]], ":v" .. term_command .. "<CR>")
-
 -- line-break movement
 --silent_map("n", "<Up>", "gk")
 --silent_map("n", "<Down>", "gj")
@@ -81,14 +70,6 @@ map("n", [[<Leader>|]], ":v" .. term_command .. "<CR>")
 --silent_map("i", "<Home>", "<C-o>g<Home>")
 --silent_map("i", "<End>", "<C-o>g<End>")
 
--- half page movement
---silent_map("n", "<PageDown>", "M<C-d>")
---silent_map("n", "<PageUp>", "M<C-u>")
---silent_map("v", "<PageDown>", "M<C-d>")
---silent_map("v", "<PageUp>", "M<C-u>")
---silent_map("i", "<PageDown>", "<C-o>M<C-o><C-d>")
---silent_map("i", "<PageUp>", "<C-o>M<C-o><C-u>")
-
 -- half page movement, primeagen version
 silent_map("n", "<PageDown>", "<C-d>zz")
 silent_map("n", "<PageUp>", "<C-u>zz")
@@ -97,9 +78,9 @@ silent_map("v", "<PageUp>", "<C-u>zz")
 silent_map("i", "<PageDown>", "<C-o><C-d><C-o>zz")
 silent_map("i", "<PageUp>", "<C-o><C-u><C-o>zz")
 
--- dynamic tab
-silent_map("n", "<Tab>", ":lua require('dynamic_tab').tab()<CR>")
-silent_map("n", "<S-Tab>", ":lua require('dynamic_tab').shift_tab()<CR>")
+-- tab buffer movement
+silent_map("n", "<Tab>", ":bnext<CR>")
+silent_map("n", "<S-Tab>", ":bprevious<CR>")
 
 opt.autoindent = true
 opt.autoread = true

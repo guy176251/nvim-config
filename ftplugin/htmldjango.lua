@@ -1,1 +1,2 @@
-require("helpers").set_tab(4)
+vim.bo.shiftwidth = 4
+vim.bo.tabstop = 4
