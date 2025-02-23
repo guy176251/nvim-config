@@ -1,6 +1,6 @@
 local M = {}
 
-function M.install_packer()
+function M.bootstrap()
 	local fn = vim.fn
 	local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 
@@ -29,7 +29,7 @@ function M.install_plugins()
 		use("vijaymarupudi/nvim-fzf-commands")
 
 		-- SESSION
-		use("ThePrimeagen/harpoon")
+		--use("ThePrimeagen/harpoon")
 		use("nvim-lua/plenary.nvim")
 		use({
 			"rmagatti/auto-session",

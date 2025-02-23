@@ -126,7 +126,7 @@ end
 
 function M.auto_session()
 	require("auto-session").setup({
-		auto_session_suppress_dirs = { "~/", "~/Projects" },
+		auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
 		auto_session_use_git_branch = true,
 	})
 
@@ -253,18 +253,26 @@ function M.nvim_treesitter()
 	require("nvim-treesitter.configs").setup({
 		ensure_installed = {
 			"python",
-			"lua",
+
+			"html",
+			"css",
 			"javascript",
 			"typescript",
 			"tsx",
-			"json",
 			"svelte",
-			"vim",
-			"css",
-			"html",
+            "angular",
+
+			"json",
 			"query",
+
 			"bash",
+			"lua",
+			"vim",
+
 			"glimmer",
+            "templ",
+            "go",
+            "rust",
 		},
 		highlight = {
 			enable = true,
