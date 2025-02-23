@@ -260,7 +260,7 @@ function M.nvim_treesitter()
 			"typescript",
 			"tsx",
 			"svelte",
-            "angular",
+			"angular",
 
 			"json",
 			"query",
@@ -270,9 +270,9 @@ function M.nvim_treesitter()
 			"vim",
 
 			"glimmer",
-            "templ",
-            "go",
-            "rust",
+			"templ",
+			"go",
+			"rust",
 		},
 		highlight = {
 			enable = true,
@@ -315,9 +315,21 @@ function M.null_ls()
 	local null_ls = require("null-ls")
 	local config = lsp_config_defaults()
 
-	--local sqlfluff_args = {
-	--	extra_args = { "--dialect", "postgres" },
-	--}
+	local h = require("null-ls.helpers")
+	local methods = require("null-ls.methods")
+	local FORMATTING = methods.internal.FORMATTING
+
+	local templ_fmt = h.make_builtin({
+		name = "templ",
+		method = FORMATTING,
+		filetypes = { "templ" },
+		generator_opts = {
+			command = "templ",
+			args = { "fmt" },
+			to_stdin = true,
+		},
+		factory = h.formatter_factory,
+	})
 
 	-- ORDER IN TABLE DETERMINES EXECUTION ORDER
 	local sources = {
@@ -326,7 +338,6 @@ function M.null_ls()
 			args = { "check", "-n", "-e", "--stdin-filename", "$FILENAME", "-" },
 		}),
 		null_ls.builtins.formatting.ruff.with({
-			--extra_args = { "--extend-select", "I001", "--unfixable", "F841,F842,F401" },
 			args = { "format", "--stdin-filename", "$FILENAME", "-" },
 		}),
 		null_ls.builtins.formatting.ruff.with({
@@ -355,6 +366,7 @@ function M.null_ls()
 		-- golang
 		--null_ls.builtins.diagnostics.golangci_lint,
 		null_ls.builtins.formatting.gofmt,
+		templ_fmt,
 
 		-- sql
 		-- null_ls.builtins.diagnostics.sqlfluff.with(sqlfluff_args),
@@ -501,6 +513,9 @@ function M.lsp_zero()
 					client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
 				end,
 			})
+		elseif client.name == "html" then
+			client.server_capabilities.documentFormattingProvider = false
+			client.server_capabilities.documentRangeFormattingProvider = false
 		end
 	end)
 
