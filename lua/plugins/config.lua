@@ -506,6 +506,10 @@ function M.lsp_zero()
 	})
 
 	lsp.on_attach(function(client, _)
+		-- diagnostics for other lsp get messed up when formatting is enabled
+		client.server_capabilities.documentFormattingProvider = false
+		client.server_capabilities.documentRangeFormattingProvider = false
+
 		if client.name == "svelte" then
 			vim.api.nvim_create_autocmd("BufWritePost", {
 				pattern = { "*.js", "*.ts" },
@@ -513,9 +517,6 @@ function M.lsp_zero()
 					client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
 				end,
 			})
-		elseif client.name == "html" then
-			client.server_capabilities.documentFormattingProvider = false
-			client.server_capabilities.documentRangeFormattingProvider = false
 		end
 	end)
 
