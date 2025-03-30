@@ -61,7 +61,7 @@ function M.install_plugins()
 			},
 			"nvim-treesitter/nvim-treesitter-context",
 			"nvim-treesitter/playground",
-			"jose-elias-alvarez/null-ls.nvim",
+			"nvimtools/none-ls.nvim",
 			"windwp/nvim-autopairs",
 
 			{

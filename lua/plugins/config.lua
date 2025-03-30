@@ -315,38 +315,18 @@ function M.null_ls()
 	local null_ls = require("null-ls")
 	local config = lsp_config_defaults()
 
-	local h = require("null-ls.helpers")
-	local methods = require("null-ls.methods")
-	local FORMATTING = methods.internal.FORMATTING
-
-	local templ_fmt = h.make_builtin({
-		name = "templ",
-		method = FORMATTING,
-		filetypes = { "templ" },
-		generator_opts = {
-			command = "templ",
-			args = { "fmt" },
-			to_stdin = true,
-		},
-		factory = h.formatter_factory,
-	})
+	local builtins = require("plugins.null_ls_builtins")
+	local formatters = builtins.formatters
+	local diagnostics = builtins.diagnostics
 
 	-- ORDER IN TABLE DETERMINES EXECUTION ORDER
 	local sources = {
 		-- python
-		null_ls.builtins.diagnostics.ruff.with({
-			args = { "check", "-n", "-e", "--stdin-filename", "$FILENAME", "-" },
-		}),
-		null_ls.builtins.formatting.ruff.with({
-			args = { "format", "--stdin-filename", "$FILENAME", "-" },
-		}),
-		null_ls.builtins.formatting.ruff.with({
-			args = { "check", "--select", "I", "--fix", "--stdin-filename", "$FILENAME", "-" },
-		}),
+		diagnostics.ruff(),
+		formatters.ruff_imports(),
+		formatters.ruff_code(),
 
 		-- js
-		null_ls.builtins.diagnostics.eslint,
-		null_ls.builtins.code_actions.eslint,
 		null_ls.builtins.formatting.prettier.with({
 			extra_filetypes = { "svelte" },
 			extra_args = { "--tab-width", "4" },
@@ -357,8 +337,7 @@ function M.null_ls()
 
 		-- bash
 		null_ls.builtins.formatting.shfmt,
-		null_ls.builtins.diagnostics.shellcheck,
-		null_ls.builtins.code_actions.shellcheck,
+		diagnostics.shellcheck(),
 
 		-- cpp
 		null_ls.builtins.formatting.clang_format,
@@ -366,7 +345,7 @@ function M.null_ls()
 		-- golang
 		--null_ls.builtins.diagnostics.golangci_lint,
 		null_ls.builtins.formatting.gofmt,
-		templ_fmt,
+		formatters.templ(),
 
 		-- sql
 		-- null_ls.builtins.diagnostics.sqlfluff.with(sqlfluff_args),
@@ -377,9 +356,6 @@ function M.null_ls()
 		-- elixir
 		null_ls.builtins.diagnostics.credo,
 		null_ls.builtins.formatting.mix,
-
-		-- zig
-		null_ls.builtins.formatting.zigfmt,
 
 		-- c_sharp
 		null_ls.builtins.formatting.csharpier,
