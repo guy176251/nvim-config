@@ -8,7 +8,7 @@
            (property_identifier) @_key
            (template_string) @injection.content
              (#set! injection.include-children)
-             (#set! injection.language "html"))))))
+             (#set! injection.language "angular"))))))
  (#eq? @_decorator "Component") (#eq? @_key "template"))
 
 ; angular inline styles
