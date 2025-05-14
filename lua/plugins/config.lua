@@ -518,6 +518,13 @@ function M.rustaceanvim()
 	vim.g.rustaceanvim = {
 		server = {
 			on_attach = lsp_config_defaults().on_attach,
+			settings = {
+				["rust-analyzer"] = {
+					cargo = {
+						features = "all",
+					},
+				},
+			},
 		},
 	}
 end
