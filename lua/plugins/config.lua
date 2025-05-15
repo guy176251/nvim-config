@@ -454,7 +454,7 @@ function M.lsp_zero()
 		"ts_ls",
 		"svelte",
 		"angularls",
-		--"tailwindcss",
+		"tailwindcss",
 		"templ",
 		"gopls",
 		"htmx",
