@@ -26,6 +26,7 @@ config.nvim_autopairs()
 config.luasnip()
 config.lsp_zero()
 config.null_ls()
+config.tailwind_tools()
 
 -- REMOVING
 --config.harpoon()

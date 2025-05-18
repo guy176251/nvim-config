@@ -109,6 +109,17 @@ function M.install_plugins()
 				version = "^5", -- Recommended
 				lazy = false, -- This plugin is already lazy
 			},
+
+			-- TAILWIND
+			{
+				"luckasRanarison/tailwind-tools.nvim",
+				name = "tailwind-tools",
+				build = ":UpdateRemotePlugins",
+				dependencies = {
+					"nvim-treesitter/nvim-treesitter",
+					"neovim/nvim-lspconfig", -- optional
+				},
+			},
 		},
 	})
 end

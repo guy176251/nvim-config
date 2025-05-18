@@ -14,14 +14,57 @@ local function nmap(...)
 	map("n", ...)
 end
 
-local function lsp_config_defaults()
+---@param params { no_formatting: boolean | nil, rust_lsp: boolean | nil } | nil
+local function lsp_config_defaults(params)
+	local rust_lsp = params and params.rust_lsp
+
 	return {
 		root_dir = require("lspconfig.util").root_pattern("pyproject.toml", "package.json", ".null-ls-root", ".git"),
 
-		on_attach = function(_, bufnr)
+		on_attach = function(client, bufnr)
 			vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", { buf = bufnr })
 
 			local opts = { noremap = true, silent = true, buffer = bufnr }
+
+			if params and params.no_formatting then
+				-- diagnostics for other lsp get messed up when formatting is enabled
+				client.server_capabilities.documentFormattingProvider = false
+				client.server_capabilities.documentRangeFormattingProvider = false
+			end
+
+			if rust_lsp then
+				nmap("gm", function()
+					vim.cmd.RustLsp("expandMacro")
+				end, opts)
+
+				nmap("ge", function()
+					vim.cmd.RustLsp("relatedDiagnostics")
+				end, opts)
+			end
+
+			nmap("K", function()
+				if rust_lsp then
+					vim.cmd.RustLsp({ "hover", "actions" })
+				else
+					vim.lsp.buf.hover()
+				end
+			end, opts)
+
+			nmap("[d", function()
+				if rust_lsp then
+					vim.cmd.RustLsp({ "renderDiagnostic", "cycle_prev" })
+				else
+					vim.diagnostic.jump({ count = -1, float = true, wrap = true })
+				end
+			end, opts)
+
+			nmap("]d", function()
+				if rust_lsp then
+					vim.cmd.RustLsp({ "renderDiagnostic", "cycle" })
+				else
+					vim.diagnostic.jump({ count = 1, float = true, wrap = true })
+				end
+			end, opts)
 
 			nmap("<C-k>", vim.lsp.buf.signature_help, opts)
 			nmap("<space>D", vim.lsp.buf.type_definition, opts)
@@ -34,13 +77,6 @@ local function lsp_config_defaults()
 				print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 			end, opts)
 			nmap("<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
-			nmap("K", vim.lsp.buf.hover, opts)
-			nmap("[d", function()
-				vim.diagnostic.goto_prev({ wrap = true })
-			end, opts)
-			nmap("]d", function()
-				vim.diagnostic.goto_next({ wrap = true })
-			end, opts)
 			nmap("gD", vim.lsp.buf.declaration, opts)
 			nmap("gd", vim.lsp.buf.definition, opts)
 			nmap("gi", vim.lsp.buf.implementation, opts)
@@ -517,7 +553,7 @@ end
 function M.rustaceanvim()
 	vim.g.rustaceanvim = {
 		server = {
-			on_attach = lsp_config_defaults().on_attach,
+			on_attach = lsp_config_defaults({ rust_lsp = true }).on_attach,
 			settings = {
 				["rust-analyzer"] = {
 					cargo = {
@@ -527,6 +563,26 @@ function M.rustaceanvim()
 			},
 		},
 	}
+end
+
+function M.tailwind_tools()
+	require("tailwind-tools").setup({
+		server = {
+			init_options = {
+				userLanguages = {
+					rust = "html",
+				},
+			},
+			settings = {
+				includeLanguages = {
+					rust = "html",
+				},
+			},
+			filetypes = {
+				"rust",
+			},
+		},
+	})
 end
 
 return M
