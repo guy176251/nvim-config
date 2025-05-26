@@ -481,21 +481,6 @@ function M.lsp_zero()
 	local lsp = require("lsp-zero")
 	lsp.preset("recommended")
 
-	lsp.ensure_installed({
-		"pyright",
-		"lua_ls",
-		"bashls",
-		"html",
-		"cssls",
-		"ts_ls",
-		"svelte",
-		"angularls",
-		"tailwindcss",
-		"templ",
-		"gopls",
-		"htmx",
-	})
-
 	lsp.configure("pyright", {
 		root_dir = lsp_config_defaults().root_dir,
 	})
@@ -513,8 +498,21 @@ function M.lsp_zero()
 	lsp.configure("html", { filetypes = html_filetypes })
 	lsp.configure("htmx", { filetypes = html_filetypes })
 
-	require("mason-lspconfig").setup_handlers({
-		["rust_analyzer"] = function() end,
+	require("mason-lspconfig").setup({
+		automatic_enable = {
+			"pyright",
+			"lua_ls",
+			"bashls",
+			"html",
+			"cssls",
+			"ts_ls",
+			"svelte",
+			"angularls",
+			"tailwindcss",
+			"templ",
+			"gopls",
+			"htmx",
+		},
 	})
 
 	lsp.on_attach(function(client, _)

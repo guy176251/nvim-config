@@ -65,7 +65,7 @@ function M.install_plugins()
 			"windwp/nvim-autopairs",
 
 			{
-				"VonHeikemen/lsp-zero.nvim",
+				"guy176251/lsp-zero.nvim",
 				branch = "v1.x",
 				dependencies = {
 					-- LSP Support
@@ -119,6 +119,13 @@ function M.install_plugins()
 					"nvim-treesitter/nvim-treesitter",
 					"neovim/nvim-lspconfig", -- optional
 				},
+			},
+
+			-- LUA
+			{
+				"folke/lazydev.nvim",
+				ft = "lua", -- only load on lua files
+				opts = {},
 			},
 		},
 	})
