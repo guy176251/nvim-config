@@ -361,6 +361,8 @@ function M.null_ls()
 		diagnostics.ruff(),
 		formatters.ruff_imports(),
 		formatters.ruff_code(),
+        null_ls.builtins.diagnostics.djlint,
+        null_ls.builtins.formatting.djlint,
 
 		-- js
 		null_ls.builtins.formatting.prettier.with({
