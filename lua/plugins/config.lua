@@ -286,8 +286,41 @@ function M.nvim_treesitter()
 		return vim.api.nvim_buf_line_count(bufnr) > 5000
 	end
 
-	require("nvim-treesitter.configs").setup({
-		ensure_installed = {
+	local ts_config = require("nvim-treesitter.configs")
+
+	local function install_htmldjango()
+		local parser_dir = ts_config.get_parser_install_dir()
+
+		if parser_dir == nil then
+			print("parser_dir is nil")
+			return
+		end
+
+		if vim.fn.isdirectory(parser_dir) == 0 then
+			print("parser_dir is not a directory")
+			return
+		end
+
+		local src = vim.fs.joinpath(vim.fn.stdpath("config"), "parsers", "htmldjango.so")
+		local dst = vim.fs.joinpath(parser_dir, "htmldjango.so")
+
+		if vim.fn.filereadable(src) == 0 then
+			print("htmldjango.so source does not exist")
+			return
+		end
+
+		if vim.fn.filereadable(dst) == 1 then
+			print("htmldjango.so is already installed")
+			return
+		end
+
+		vim.fn.filecopy(src, dst)
+	end
+
+	install_htmldjango()
+
+	ts_config.setup({
+		auto_install = {
 			"python",
 
 			"html",
@@ -309,6 +342,7 @@ function M.nvim_treesitter()
 			"templ",
 			"go",
 			"rust",
+			"markdown",
 		},
 		highlight = {
 			enable = true,
@@ -548,7 +582,6 @@ function M.lsp_zero()
 
 	lsp.setup()
 
-	vim.lsp.log.error("SETTING UP LSP")
 	vim.lsp.enable("angular-language-server")
 end
 
