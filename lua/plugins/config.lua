@@ -361,8 +361,8 @@ function M.null_ls()
 		diagnostics.ruff(),
 		formatters.ruff_imports(),
 		formatters.ruff_code(),
-        null_ls.builtins.diagnostics.djlint,
-        null_ls.builtins.formatting.djlint,
+		null_ls.builtins.diagnostics.djlint,
+		null_ls.builtins.formatting.djlint,
 
 		-- js
 		null_ls.builtins.formatting.prettier.with({
@@ -500,23 +500,6 @@ function M.lsp_zero()
 	lsp.configure("html", { filetypes = html_filetypes })
 	lsp.configure("htmx", { filetypes = html_filetypes })
 
-	require("mason-lspconfig").setup({
-		automatic_enable = {
-			"pyright",
-			"lua_ls",
-			"bashls",
-			"html",
-			"cssls",
-			"ts_ls",
-			"svelte",
-			"angularls",
-			"tailwindcss",
-			"templ",
-			"gopls",
-			"htmx",
-		},
-	})
-
 	lsp.on_attach(function(client, _)
 		-- diagnostics for other lsp get messed up when formatting is enabled
 		client.server_capabilities.documentFormattingProvider = false
@@ -530,12 +513,43 @@ function M.lsp_zero()
 				end,
 			})
 		end
+
+		local function filter_duplicates(array)
+			local unique = {}
+			for _, tableA in ipairs(array) do
+				local is_duplicate = false
+				for _, tableB in ipairs(unique) do
+					if vim.deep_equal(tableA, tableB) then
+						is_duplicate = true
+						break
+					end
+				end
+				if not is_duplicate then
+					table.insert(unique, tableA)
+				end
+			end
+			return unique
+		end
+
+		local function on_list(options)
+			options.items = filter_duplicates(options.items)
+			vim.fn.setqflist({}, " ", options)
+			vim.cmd("botright copen")
+		end
+
+		vim.keymap.set("n", "gr", function()
+			vim.lsp.log.error("GETTING REFERENCES")
+			vim.lsp.buf.references(nil, { on_list = on_list })
+		end, { noremap = true })
 	end)
 
 	-- (Optional) Configure lua language server for neovim
 	lsp.nvim_workspace()
 
 	lsp.setup()
+
+	vim.lsp.log.error("SETTING UP LSP")
+	vim.lsp.enable("angular-language-server")
 end
 
 function M.undotree()

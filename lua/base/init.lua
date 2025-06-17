@@ -119,6 +119,8 @@ opt.foldlevelstart = 30
 opt.mouse = ""
 opt.backupcopy = "yes"
 
+opt.winborder = "rounded"
+
 vim.cmd([[au BufRead,BufNewFile .env.* set filetype=sh]])
 vim.cmd([[au BufRead,BufNewFile Dockerfile.* set filetype=dockerfile]])
 --vim.cmd([[au BufRead,BufNewFile *.html set filetype=html]])
