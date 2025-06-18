@@ -41,17 +41,31 @@ local function get_angular_core_version()
 	return angular_core_version
 end
 
+local cmd = {
+	"ngserver",
+	"--stdio",
+	"--tsProbeLocations",
+	ts_probe_dirs,
+	"--ngProbeLocations",
+	ng_probe_dirs,
+}
+
+local angular_version = get_angular_core_version()
+if string.len(angular_version) > 0 then
+	table.insert(cmd, "--angularCoreVersion")
+	table.insert(cmd, angular_version)
+end
+
+--vim.lsp.log.error("==================================================")
+--vim.lsp.log.error("ngserver_path", ngserver_path)
+--vim.lsp.log.error("extension_path", extension_path)
+--vim.lsp.log.error("ts_probe_dirs", ts_probe_dirs)
+--vim.lsp.log.error("ng_probe_dirs", ng_probe_dirs)
+--vim.lsp.log.error("cmd", vim.iter(cmd):join(" "))
+--vim.lsp.log.error("==================================================")
+
 return {
-	cmd = {
-		"ngserver",
-		"--stdio",
-		"--tsProbeLocations",
-		ts_probe_dirs,
-		"--ngProbeLocations",
-		ng_probe_dirs,
-		"--angularCoreVersion",
-		get_angular_core_version(),
-	},
+	cmd = cmd,
 	filetypes = { "typescript", "html", "typescriptreact", "typescript.tsx", "htmlangular" },
 	root_markers = { "angular.json", "nx.json" },
 }

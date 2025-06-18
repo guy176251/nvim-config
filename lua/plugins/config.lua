@@ -310,7 +310,6 @@ function M.nvim_treesitter()
 		end
 
 		if vim.fn.filereadable(dst) == 1 then
-			print("htmldjango.so is already installed")
 			return
 		end
 
@@ -513,6 +512,10 @@ function M.lsp_zero()
 	--
 	-- https://github.com/VonHeikemen/lsp-zero.nvim
 	--
+
+	-- running this before starting up mason
+	-- somehow prevents duplicate language servers
+	require("mason-lspconfig").setup()
 
 	local lsp = require("lsp-zero")
 	lsp.preset("recommended")
