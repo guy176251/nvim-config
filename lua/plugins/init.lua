@@ -24,9 +24,6 @@ config.rustaceanvim()
 -- LSP STUFF
 config.nvim_autopairs()
 config.luasnip()
-config.lsp_zero()
+require("plugins.lsp_setup")
 config.null_ls()
 config.tailwind_tools()
-
--- REMOVING
---config.harpoon()

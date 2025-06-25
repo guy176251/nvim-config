@@ -6,88 +6,6 @@ local function map(mode, lhs, rhs, opts)
 	vim.keymap.set(mode, lhs, rhs, default_opts)
 end
 
-local function silent_map(mode, lhs, rhs)
-	map(mode, lhs, rhs, { silent = true })
-end
-
-local function nmap(...)
-	map("n", ...)
-end
-
----@param params { no_formatting: boolean | nil, rust_lsp: boolean | nil } | nil
-local function lsp_config_defaults(params)
-	local rust_lsp = params and params.rust_lsp
-
-	return {
-		root_dir = require("lspconfig.util").root_pattern("pyproject.toml", "package.json", ".null-ls-root", ".git"),
-
-		on_attach = function(client, bufnr)
-			vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", { buf = bufnr })
-
-			local opts = { noremap = true, silent = true, buffer = bufnr }
-
-			if params and params.no_formatting then
-				-- diagnostics for other lsp get messed up when formatting is enabled
-				client.server_capabilities.documentFormattingProvider = false
-				client.server_capabilities.documentRangeFormattingProvider = false
-			end
-
-			if rust_lsp then
-				nmap("gm", function()
-					vim.cmd.RustLsp("expandMacro")
-				end, opts)
-
-				nmap("ge", function()
-					vim.cmd.RustLsp("relatedDiagnostics")
-				end, opts)
-			end
-
-			nmap("K", function()
-				if rust_lsp then
-					vim.cmd.RustLsp({ "hover", "actions" })
-				else
-					vim.lsp.buf.hover()
-				end
-			end, opts)
-
-			nmap("[d", function()
-				if rust_lsp then
-					vim.cmd.RustLsp({ "renderDiagnostic", "cycle_prev" })
-				else
-					vim.diagnostic.jump({ count = -1, float = true, wrap = true })
-				end
-			end, opts)
-
-			nmap("]d", function()
-				if rust_lsp then
-					vim.cmd.RustLsp({ "renderDiagnostic", "cycle" })
-				else
-					vim.diagnostic.jump({ count = 1, float = true, wrap = true })
-				end
-			end, opts)
-
-			nmap("<C-k>", vim.lsp.buf.signature_help, opts)
-			nmap("<space>D", vim.lsp.buf.type_definition, opts)
-			nmap("<space>ca", vim.lsp.buf.code_action, opts)
-			nmap("<space>e", vim.diagnostic.open_float, opts)
-			nmap("<space>q", vim.diagnostic.setloclist, opts)
-			nmap("<space>rn", vim.lsp.buf.rename, opts)
-			nmap("<space>wa", vim.lsp.buf.add_workspace_folder, opts)
-			nmap("<space>wl", function()
-				print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-			end, opts)
-			nmap("<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
-			nmap("gD", vim.lsp.buf.declaration, opts)
-			nmap("gd", vim.lsp.buf.definition, opts)
-			nmap("gi", vim.lsp.buf.implementation, opts)
-			nmap("gr", vim.lsp.buf.references, opts)
-			nmap("<space>f", function()
-				vim.lsp.buf.format({ async = true })
-			end, opts)
-		end,
-	}
-end
-
 local M = {}
 
 function M.hop()
@@ -142,24 +60,6 @@ function M.nvim_fzf()
 	}
 end
 
-function M.harpoon()
-	require("harpoon").setup({
-		global_settings = {
-			save_on_toggle = false,
-			save_on_change = true,
-			enter_on_sendcmd = false,
-			tmux_autoclose_windows = false,
-			excluded_filetypes = { "harpoon" },
-		},
-	})
-	nmap("<Leader>a", ":lua require('harpoon.mark').add_file()<CR>")
-	nmap("<Leader>m", ":lua require('harpoon.ui').toggle_quick_menu()<CR>")
-
-	for i = 1, 4, 1 do
-		nmap("<C-" .. i .. ">", ':lua require("harpoon.ui").nav_file(' .. i .. ")<CR>")
-	end
-end
-
 function M.auto_session()
 	require("auto-session").setup({
 		auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
@@ -192,8 +92,8 @@ function M.lualine()
 	end
 
 	-- dynamic tab
-	silent_map("n", "<Tab>", tab)
-	silent_map("n", "<S-Tab>", shift_tab)
+	map("n", "<Tab>", tab, { silent = true })
+	map("n", "<S-Tab>", shift_tab, { silent = true })
 
 	-- config options
 	local function buffer_window(type, cond)
@@ -319,29 +219,26 @@ function M.nvim_treesitter()
 	install_htmldjango()
 
 	ts_config.setup({
-		auto_install = {
-			"python",
-
-			"html",
-			"css",
-			"javascript",
-			"typescript",
-			"tsx",
-			"svelte",
+		auto_install = true,
+		ensure_installed = {
 			"angular",
-
-			"json",
-			"query",
-
 			"bash",
-			"lua",
-			"vim",
-
+			"css",
 			"glimmer",
-			"templ",
 			"go",
-			"rust",
+			"html",
+			"javascript",
+			"json",
+			"lua",
 			"markdown",
+			"python",
+			"query",
+			"rust",
+			"svelte",
+			"templ",
+			"tsx",
+			"typescript",
+			"vim",
 		},
 		highlight = {
 			enable = true,
@@ -367,24 +264,11 @@ function M.nvim_treesitter()
 		vim.opt.foldmethod = "expr"
 		vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 	end
-
-	-- potentially load .so from this repo
-	--print(debug.getinfo(2, "S").source:sub(2))
-	--vim.fn.getchar()
-
-	--local shared_lib = "/home/guy/code/treesitter/tree-sitter-htmldjango-myown/src/parser.so"
-	--if vim.fn.filereadable(shared_lib) == 1 then
-	--	vim.treesitter.language.add("htmldjango", {
-	--		path = shared_lib,
-	--	})
-	--end
 end
 
 function M.null_ls()
 	local null_ls = require("null-ls")
-	local config = lsp_config_defaults()
-
-	local builtins = require("plugins.null_ls_builtins")
+	local builtins = require("plugins.null_ls")
 	local formatters = builtins.formatters
 	local diagnostics = builtins.diagnostics
 
@@ -419,9 +303,6 @@ function M.null_ls()
 		formatters.templ(),
 
 		-- sql
-		-- null_ls.builtins.diagnostics.sqlfluff.with(sqlfluff_args),
-		-- null_ls.builtins.formatting.sqlfluff.with(sqlfluff_args),
-		-- null_ls.builtins.formatting.sqlfmt,
 		null_ls.builtins.formatting.sql_formatter,
 
 		-- elixir
@@ -431,10 +312,11 @@ function M.null_ls()
 		-- c_sharp
 		null_ls.builtins.formatting.csharpier,
 	}
+
 	null_ls.setup({
 		sources = sources,
-		on_attach = config.on_attach,
-		root_dir = config.root_dir,
+		on_attach = require("plugins.lsp_keymaps").on_attach,
+		root_dir = require("lspconfig.util").root_pattern(),
 	})
 end
 
@@ -508,88 +390,8 @@ function M.gitsigns()
 	})
 end
 
-function M.lsp_zero()
-	--
-	-- https://github.com/VonHeikemen/lsp-zero.nvim
-	--
-
-	-- running this before starting up mason
-	-- somehow prevents duplicate language servers
-	require("mason-lspconfig").setup()
-
-	local lsp = require("lsp-zero")
-	lsp.preset("recommended")
-
-	lsp.configure("pyright", {
-		root_dir = lsp_config_defaults().root_dir,
-	})
-
-	lsp.configure("ts_ls", {
-		settings = {
-			implicitProjectConfiguration = {
-				checkJs = true,
-			},
-		},
-	})
-
-	local html_filetypes = { "html", "htmldjango", "templ", "glimmer", "handlebars" }
-
-	lsp.configure("html", { filetypes = html_filetypes })
-	lsp.configure("htmx", { filetypes = html_filetypes })
-
-	lsp.on_attach(function(client, _)
-		-- diagnostics for other lsp get messed up when formatting is enabled
-		client.server_capabilities.documentFormattingProvider = false
-		client.server_capabilities.documentRangeFormattingProvider = false
-
-		if client.name == "svelte" then
-			vim.api.nvim_create_autocmd("BufWritePost", {
-				pattern = { "*.js", "*.ts" },
-				callback = function(ctx)
-					client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
-				end,
-			})
-		end
-
-		local function filter_duplicates(array)
-			local unique = {}
-			for _, tableA in ipairs(array) do
-				local is_duplicate = false
-				for _, tableB in ipairs(unique) do
-					if vim.deep_equal(tableA, tableB) then
-						is_duplicate = true
-						break
-					end
-				end
-				if not is_duplicate then
-					table.insert(unique, tableA)
-				end
-			end
-			return unique
-		end
-
-		local function on_list(options)
-			options.items = filter_duplicates(options.items)
-			vim.fn.setqflist({}, " ", options)
-			vim.cmd("botright copen")
-		end
-
-		vim.keymap.set("n", "gr", function()
-			vim.lsp.log.error("GETTING REFERENCES")
-			vim.lsp.buf.references(nil, { on_list = on_list })
-		end, { noremap = true })
-	end)
-
-	-- (Optional) Configure lua language server for neovim
-	lsp.nvim_workspace()
-
-	lsp.setup()
-
-	vim.lsp.enable("angular-language-server")
-end
-
 function M.undotree()
-	nmap("<Leader>u", ":UndotreeToggle<CR>")
+	map("n", "<Leader>u", ":UndotreeToggle<CR>")
 end
 
 function M.luasnip()
@@ -603,7 +405,7 @@ end
 function M.rustaceanvim()
 	vim.g.rustaceanvim = {
 		server = {
-			on_attach = lsp_config_defaults({ rust_lsp = true }).on_attach,
+			on_attach = require("plugins.lsp_keymaps").on_attach,
 			settings = {
 				["rust-analyzer"] = {
 					cargo = {
@@ -616,23 +418,7 @@ function M.rustaceanvim()
 end
 
 function M.tailwind_tools()
-	require("tailwind-tools").setup({
-		server = {
-			init_options = {
-				userLanguages = {
-					rust = "html",
-				},
-			},
-			settings = {
-				includeLanguages = {
-					rust = "html",
-				},
-			},
-			filetypes = {
-				"rust",
-			},
-		},
-	})
+	require("tailwind-tools").setup({})
 end
 
 return M
