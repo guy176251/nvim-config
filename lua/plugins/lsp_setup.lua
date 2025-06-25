@@ -128,6 +128,15 @@ cmp.setup({
 
 require("mason").setup()
 
+vim.lsp.config("ts_ls", {
+	settings = {
+		implicitProjectConfiguration = {
+			--checkJs = true,
+			experimentalDecorators = true,
+		},
+	},
+})
+
 vim.lsp.enable({
 	"angular-language-server",
 	"bashls",
