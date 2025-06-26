@@ -35,7 +35,6 @@ function M.install_plugins()
 			"vijaymarupudi/nvim-fzf-commands",
 
 			-- SESSION
-			--"ThePrimeagen/harpoon",
 			"nvim-lua/plenary.nvim",
 			"rmagatti/auto-session",
 			"mbbill/undotree",
@@ -82,20 +81,8 @@ function M.install_plugins()
 				},
 			},
 
-			-- JS
-			"HerringtonDarkholme/yats.vim",
-			"chemzqm/vim-jsx-improve",
-			"yuezk/vim-js", -- js
-			"maxmellon/vim-jsx-pretty", -- react/tsx syntax highlight & indent
-
-			-- HTML/CSS
+			-- HTML
 			"mattn/emmet-vim",
-
-			-- ZIG
-			"ziglang/zig.vim",
-
-			-- C#
-			"jlcrochet/vim-razor",
 
 			-- RUST
 			{

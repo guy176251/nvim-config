@@ -132,6 +132,8 @@ cmp.setup({
 
 require("mason").setup()
 
+local html_filetypes = { "html", "templ", "htmldjango" }
+
 vim.lsp.config("ts_ls", {
 	settings = {
 		implicitProjectConfiguration = {
@@ -139,6 +141,10 @@ vim.lsp.config("ts_ls", {
 			experimentalDecorators = true,
 		},
 	},
+})
+
+vim.lsp.config("html", {
+	filetypes = html_filetypes,
 })
 
 vim.lsp.enable({
@@ -157,4 +163,5 @@ vim.lsp.enable({
 	"taplo",
 	"templ",
 	"ts_ls",
+    "zls",
 })
