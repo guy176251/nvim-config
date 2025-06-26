@@ -33,6 +33,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			return
 		end
 
+		client.server_capabilities.documentFormattingProvider = false
+		client.server_capabilities.documentRangeFormattingProvider = false
+
 		local is_rust_analyzer = client.name == "rust-analyzer"
 		require("plugins.lsp_keymaps").set_lsp_keymaps(ev.buf, is_rust_analyzer)
 	end,
@@ -163,5 +166,5 @@ vim.lsp.enable({
 	"taplo",
 	"templ",
 	"ts_ls",
-    "zls",
+	"zls",
 })
