@@ -118,6 +118,10 @@ cmp.setup({
 		completion = cmp.config.window.bordered(),
 		documentation = cmp.config.window.bordered(),
 	},
+	preselect = "item",
+	completion = {
+		completeopt = "menu,menuone,noinsert",
+	},
 	snippet = {
 		expand = function(args)
 			luasnip.lsp_expand(args.body)
