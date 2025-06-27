@@ -1,16 +1,27 @@
-snippet pa
+snippet partial
 	{% partial $0 %}
 
-snippet pd
-	{% partialdef $0 %}
+snippet partialdef
+	{% partialdef $1 %}
+        $0
 	{% endpartialdef %}
 
-snippet tt
+snippet tag
 	{% $0 %}
 
-snippet ttt
-	{% $1 $2 %}
-	{% end$1 %}
-
-snippet vv
+snippet variable
 	{{ $0 }}
+
+snippet url
+    {% url "$0" %}
+
+snippet static
+    {% static "$0" %}
+
+snippet elif
+    {% elif $1 %}
+        $0
+
+snippet else
+    {% else %}
+        $0
