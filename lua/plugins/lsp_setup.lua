@@ -33,11 +33,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			return
 		end
 
-		client.server_capabilities.documentFormattingProvider = false
-		client.server_capabilities.documentRangeFormattingProvider = false
+		local enable_formatting = {
+			["rust-analyzer"] = true,
+		}
 
-		local is_rust_analyzer = client.name == "rust-analyzer"
-		require("plugins.lsp_keymaps").set_lsp_keymaps(ev.buf, is_rust_analyzer)
+		if enable_formatting[client.name] == nil then
+			client.server_capabilities.documentFormattingProvider = false
+			client.server_capabilities.documentRangeFormattingProvider = false
+		end
+
+		require("plugins.lsp_keymaps").set_lsp_keymaps(ev.buf, client.name == "rust-analyzer")
 	end,
 })
 
