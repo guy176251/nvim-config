@@ -108,6 +108,16 @@ function M.install_plugins()
 				ft = "lua", -- only load on lua files
 				opts = {},
 			},
+
+			-- CSHARP
+			{
+				"seblyng/roslyn.nvim",
+				---@module 'roslyn.config'
+				---@type RoslynNvimConfig
+				opts = {
+					-- your configuration comes here; leave empty for default settings
+				},
+			},
 		},
 	})
 end

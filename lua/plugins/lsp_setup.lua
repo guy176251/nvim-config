@@ -138,7 +138,12 @@ cmp.setup({
 	mapping = cmp.mapping.preset.insert(mapping),
 })
 
-require("mason").setup()
+require("mason").setup({
+	registries = {
+		"github:mason-org/mason-registry",
+		"github:Crashdummyy/mason-registry",
+	},
+})
 
 local html_filetypes = { "html", "templ", "htmldjango" }
 
@@ -172,4 +177,5 @@ vim.lsp.enable({
 	"templ",
 	"ts_ls",
 	"zls",
+	"roslyn",
 })
