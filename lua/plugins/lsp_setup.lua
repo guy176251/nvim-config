@@ -150,7 +150,7 @@ local html_filetypes = { "html", "templ", "htmldjango" }
 vim.lsp.config("ts_ls", {
 	settings = {
 		implicitProjectConfiguration = {
-			--checkJs = true,
+			checkJs = true,
 			experimentalDecorators = true,
 		},
 	},
@@ -177,5 +177,5 @@ vim.lsp.enable({
 	"templ",
 	"ts_ls",
 	"zls",
-	"roslyn",
+	"csharp_ls",
 })

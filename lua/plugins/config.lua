@@ -156,7 +156,7 @@ function M.lualine()
 						return tab_mode()
 					end,
 					max_length = function()
-						return columns(1)
+						return columns(5)
 					end,
 				},
 			},

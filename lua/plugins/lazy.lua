@@ -22,7 +22,7 @@ function M.install_plugins()
 	require("lazy").setup({
 		spec = {
 			-- NAVIGATION
-			"phaazon/hop.nvim",
+			--"smoka7/hop.nvim",
 
 			-- VIM THEMING
 			"folke/tokyonight.nvim",
@@ -53,11 +53,11 @@ function M.install_plugins()
 
 			-- LSP
 			{
-				"nvim-treesitter/nvim-treesitter",
+				--"nvim-treesitter/nvim-treesitter",
+				"guy176251/nvim-treesitter",
 				build = ":TSUpdate",
 			},
 			"nvim-treesitter/nvim-treesitter-context",
-			"nvim-treesitter/playground",
 			"nvimtools/none-ls.nvim",
 			"windwp/nvim-autopairs",
 			"neovim/nvim-lspconfig",
@@ -92,31 +92,22 @@ function M.install_plugins()
 			},
 
 			-- TAILWIND
-			{
-				"luckasRanarison/tailwind-tools.nvim",
-				name = "tailwind-tools",
-				build = ":UpdateRemotePlugins",
-				dependencies = {
-					"nvim-treesitter/nvim-treesitter",
-					"neovim/nvim-lspconfig", -- optional
-				},
-			},
+            -- deprecated
+			--{
+			--	"luckasRanarison/tailwind-tools.nvim",
+			--	name = "tailwind-tools",
+			--	build = ":UpdateRemotePlugins",
+			--	dependencies = {
+			--		"nvim-treesitter/nvim-treesitter",
+			--		"neovim/nvim-lspconfig", -- optional
+			--	},
+			--},
 
 			-- LUA
 			{
 				"folke/lazydev.nvim",
 				ft = "lua", -- only load on lua files
 				opts = {},
-			},
-
-			-- CSHARP
-			{
-				"seblyng/roslyn.nvim",
-				---@module 'roslyn.config'
-				---@type RoslynNvimConfig
-				opts = {
-					-- your configuration comes here; leave empty for default settings
-				},
 			},
 		},
 	})
