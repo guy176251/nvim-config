@@ -56,6 +56,7 @@ function M.install_plugins()
 				--"nvim-treesitter/nvim-treesitter",
 				"guy176251/nvim-treesitter",
 				build = ":TSUpdate",
+                lazy = false,
 			},
 			"nvim-treesitter/nvim-treesitter-context",
 			"nvimtools/none-ls.nvim",

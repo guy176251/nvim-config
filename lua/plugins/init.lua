@@ -13,10 +13,9 @@ config.auto_session()
 config.undotree()
 config.indent_blankline()
 config.lualine()
+config.nvim_treesitter_new()
 config.tokyonight()
 config.rustaceanvim()
-
--- LSP STUFF
 config.nvim_autopairs()
 config.luasnip()
 require("plugins.lsp_setup")

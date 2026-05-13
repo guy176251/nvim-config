@@ -266,6 +266,32 @@ function M.nvim_treesitter()
 	end
 end
 
+function M.nvim_treesitter_new()
+	local ts = require("nvim-treesitter")
+	vim.print(ts.get_available())
+	ts.setup()
+	ts.install({
+		"angular",
+		"bash",
+		"css",
+		"glimmer",
+		"go",
+		"html",
+		"javascript",
+		"json",
+		"lua",
+		"markdown",
+		"python",
+		"query",
+		"rust",
+		"svelte",
+		"templ",
+		"tsx",
+		"typescript",
+		"vim",
+	})
+end
+
 function M.null_ls()
 	local null_ls = require("null-ls")
 	local builtins = require("plugins.null_ls")
