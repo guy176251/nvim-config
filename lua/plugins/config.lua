@@ -289,6 +289,7 @@ function M.nvim_treesitter_new()
 		"vim",
 		"yaml",
 		"toml",
+        "php",
 	}
 	local run_langs = vim.tbl_extend("force", install_langs, {
 		"htmlangular",
