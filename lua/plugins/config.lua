@@ -268,7 +268,6 @@ end
 
 function M.nvim_treesitter_new()
 	local ts = require("nvim-treesitter")
-	vim.print(ts.get_available())
 	ts.setup()
 	ts.install({
 		"angular",
@@ -289,6 +288,12 @@ function M.nvim_treesitter_new()
 		"tsx",
 		"typescript",
 		"vim",
+	})
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = { "*" },
+		callback = function()
+			vim.treesitter.start()
+		end,
 	})
 end
 
